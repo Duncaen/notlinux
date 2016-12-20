@@ -1,5 +1,5 @@
 pkg=openssh
-ver=7.3p1
+ver=7.4p1
 url=http://ftp.hostserver.de/pub/OpenBSD/OpenSSH/portable/${pkg}-${ver}.tar.gz
 
 cfg=\
