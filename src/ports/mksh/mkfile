@@ -1,0 +1,13 @@
+pkg=mksh
+ver=R54
+
+url=https://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-${ver}.tgz
+
+<$root/src/mkport
+
+post-fetch:V:
+	[ ! -d "src/mksh" ] || mv src/mksh{,-${ver}}
+
+do-build:V:
+	cd "src/${wrk}"
+	sh ./Build.sh
