@@ -1,0 +1,7 @@
+pkg=make
+ver=4.2
+
+url=https://ftp.gnu.org/gnu/make/make-${ver}.tar.bz2
+sig=${url}.sig
+
+<$root/src/mkport
