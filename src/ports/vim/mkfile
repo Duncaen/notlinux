@@ -1,0 +1,11 @@
+pkg=vim
+ver=8.0.0134
+
+url=https://github.com/vim/vim/archive/v${ver}.tar.gz
+
+cfg=\
+	--enable-gui=no\
+	--disable-xim\
+	--with-x=no\
+
+<$root/src/mkport

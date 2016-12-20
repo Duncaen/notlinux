@@ -1,0 +1,5 @@
+pkg=libressl
+ver=2.4.4
+url=https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-${ver}.tar.gz
+
+<$root/src/mkport

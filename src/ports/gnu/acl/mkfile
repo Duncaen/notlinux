@@ -1,0 +1,22 @@
+pkg=lr
+ver=v0.3.2
+
+git=git@github.com:chneukirchen/lr.git
+
+<$root/src/mkport
+
+TARG=\
+	lr\
+
+OFILES=\
+	${TARG}.o\
+
+<$root/src/mkcmd
+
+build:QV:
+	case "${pwd}" in *${wrk}) return 0 ;; esac
+	# [ "${pwd#*/}" = "${wrk}" ] && return 0
+	cd "${wrk}" && mk $MKFLAGS -f "${pwd}/mkfile" all
+
+clean:QV:
+	cd "${wrk}" && mk $MKFLAGS -f "${pwd}/mkfile" clean

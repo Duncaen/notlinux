@@ -1,0 +1,19 @@
+MKSHELL = sh
+objtype = x86_64-linux-musl
+O       = o
+OS      = o
+
+
+AR    = $objtype-ar
+AS    = ${CC} -c
+CC    = $objtype-gcc
+LD    = $objtype-gcc
+RANLIB= $objtype-ranlib
+YACC  = yacc
+LEX   = lex
+
+CFLAGS = -fPIC -isystem $root/src/include
+LDFLAGS= -static
+AFLAGS =
+YFLAGS =-d
+

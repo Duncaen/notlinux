@@ -1,0 +1,64 @@
+wrk=$pkg-$ver
+pwd=`pwd`
+
+quiet=
+
+# FILES=`lr files "files-${ver}"`
+# PATCHES=`lr patches "patches-${ver}"`
+
+default:V: fetch build
+
+fetch:V: fetch-prepare fetch-cvs fetch-git fetch-url fetch-post
+
+build:V: fetch
+
+fetch-prepare:QV:
+	[ -d "src" ] || mkdir -p "src"
+
+# cvs - mirror
+# cvs_rev - branch/version/revision
+# cvs_mod - module
+fetch-cvs:QV:
+	[ "$cvs" ] || return 0
+	(
+		cd src
+		[ -d "$wrk" ] \
+			&& cvs ${quiet:+"-q"} up -r"$cvs_rev" -d "$wrk" \
+			|| cvs ${quiet:+"-q"} -d "$cvs" get -r"$cvs_rev" -d "$wrk" "$cvs_mod"
+	)
+
+# git - remote
+# git_rev - revision, default $ver
+fetch-git:QV:
+	[ "$git" ] || return 0
+	(
+		cd src
+		[ -d "$wrk" ] \
+			|| git clone ${quiet:+"-q"} "$git" "$wrk" \
+			&& cd "$wrk"
+		git reset ${quiet:+"-q"} --hard && git checkout "${git_rev:=$ver}"
+	)
+
+fetch-url:QV:
+	[ "$url" ] || return 0
+	[ -d "$wrk" ] && return 0
+	(
+		cd src
+		fname=${url##*>}
+		[ "$url" = "$fname" ] && fname=${fname##*/}
+		wget -nv -c -O "$fname" "$url"
+		case "$fname" in
+		*.tar*) tar xfv "$fname" ;;
+		esac
+	)
+
+fetch-post:V:
+	cp -r files/* "src/${wrk}"
+
+build:V:
+	cd "${wrk}"
+	[ -e ./configure ] \
+		&& ./configure \
+			--prefix=/usr \
+			$cfg
+	make

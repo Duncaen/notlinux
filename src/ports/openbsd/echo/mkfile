@@ -1,0 +1,11 @@
+pkg=echo
+ver=6.0
+
+cvs=anoncvs@ftp.hostserver.de:/cvs
+cvs_mod=src/bin/echo
+cvs_rev=OPENBSD_6_0
+
+<$root/src/mkport
+
+build:V:
+	cd "src/${wrk}" && mk $MKFLAGS

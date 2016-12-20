@@ -1,0 +1,10 @@
+LIB=\
+	$root/$objtype/lib/libopenbsd.a\
+
+TARG=\
+	echo\
+
+OFILES=\
+	${TARG}.o\
+
+<$root/src/mkcmd

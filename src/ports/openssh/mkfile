@@ -1,0 +1,21 @@
+pkg=openssh
+ver=7.3p1
+url=http://ftp.hostserver.de/pub/OpenBSD/OpenSSH/portable/${pkg}-${ver}.tar.gz
+
+cfg=\
+	--disable-utmp\
+	--disable-utmpx\
+	--disable-wtmp\
+	--disable-wtmpx\
+	--disable-libutil\
+	--disable-pututline\
+	--disable-pututxline\
+	--with-privsep-user=_ssh\
+	--with-pie\
+	--with-sandbox=seccomp_filter\
+	CC=$CC\
+	CFLAGS=$CFLAGS\
+	LD=$LD\
+	LDFLAGS=$LDFLAGS\
+
+<$root/src/mkport

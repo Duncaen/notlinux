@@ -1,0 +1,14 @@
+<$root/src/mkconf
+
+all:V: $O.$TARG
+
+$TARG:V: $O.$TARG
+
+$O.$TARG: $OFILES $LIB
+
+install:V: $TARG.install
+
+CLEANFILES=$CLEANFILES $TARG
+NUKEFILES=$NUKEFILES $BIN/$TARG
+
+<$root/src/mkcommon

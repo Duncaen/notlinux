@@ -1,0 +1,148 @@
+<$root/src/mklib
+
+LIB=$root/$objtype/lib/lib9n.a
+
+all:V: $LIB
+
+NUM=\
+	charstod.$O\
+	pow10.$O\
+
+REGEXPOFILES=\
+	regcomp.$O\
+	regerror.$O\
+	regexec.$O\
+	regsub.$O\
+	regaux.$O\
+	rregexec.$O\
+	rregsub.$O\
+
+FMTOFILES=\
+	dofmt.$O\
+	errfmt.$O\
+	fltfmt.$O\
+	fmt.$O\
+	fmtfd.$O\
+	fmtfdflush.$O\
+	fmtlocale.$O\
+	fmtlock2.$O\
+	fmtnull.$O\
+	fmtprint.$O\
+	fmtquote.$O\
+	fmtrune.$O\
+	fmtstr.$O\
+	fmtvprint.$O\
+	fprint.$O\
+	nan64.$O\
+	print.$O\
+	runefmtstr.$O\
+	runeseprint.$O\
+	runesmprint.$O\
+	runesnprint.$O\
+	runesprint.$O\
+	runevseprint.$O\
+	runevsmprint.$O\
+	runevsnprint.$O\
+	seprint.$O\
+	smprint.$O\
+	snprint.$O\
+	sprint.$O\
+	strtod.$O\
+	vfprint.$O\
+	vseprint.$O\
+	vsmprint.$O\
+	vsnprint.$O\
+	$NUM\
+
+UTFOFILES=\
+	rune.$O\
+	runestrcat.$O\
+	runestrchr.$O\
+	runestrcmp.$O\
+	runestrcpy.$O\
+	runestrdup.$O\
+	runestrlen.$O\
+	runestrecpy.$O\
+	runestrncat.$O\
+	runestrncmp.$O\
+	runestrncpy.$O\
+	runestrrchr.$O\
+	runestrstr.$O\
+	runetype.$O\
+	utfecpy.$O\
+	utflen.$O\
+	utfnlen.$O\
+	utfrrune.$O\
+	utfrune.$O\
+	utfutf.$O\
+
+BIOOFILES=\
+	bio/bbuffered.$O\
+	bio/bfildes.$O\
+	bio/bflush.$O\
+	bio/bgetc.$O\
+	bio/bgetrune.$O\
+	bio/bgetd.$O\
+	bio/binit.$O\
+	bio/boffset.$O\
+	bio/bprint.$O\
+	bio/bputc.$O\
+	bio/bputrune.$O\
+	bio/brdline.$O\
+	bio/brdstr.$O\
+	bio/bread.$O\
+	bio/bseek.$O\
+	bio/bvprint.$O\
+	bio/bwrite.$O\
+
+LIB9OFILES=\
+	_p9dir.$O\
+	errstr.$O\
+	get9root.$O\
+	lock.$O\
+	dirfstat.$O\
+	dirread.$O\
+	strecpy.$O\
+	unsharp.$O\
+
+OFILES=\
+	$LIB9OFILES\
+	$REGEXPOFILES\
+	$FMTOFILES\
+	$UTFOFILES\
+	$BIOOFILES\
+
+HFILES=\
+	$root/src/include/lib9.h\
+
+CLEANFILES=\
+	fmt/*.[o]\
+	utf/*.[o]\
+	bio/*.[o]\
+
+%.$O: regexp/%.c
+	$CC $CFLAGS -Ifmt $CPPFLAGS -c regexp/$stem.c -o $target
+
+%.$O: fmt/%.c
+	$CC $CFLAGS -Ifmt $CPPFLAGS -c fmt/$stem.c -o $target
+
+%.$O: utf/%.c
+	$CC $CFLAGS $CPPFLAGS -c utf/$stem.c -o $target
+
+XLIB=$PLAN9/lib/$LIB
+
+testfmt: testfmt.$O $XLIB
+	$LD -o $target testfmt.$O
+
+testfltfmt: testfltfmt.$O $XLIB
+	$LD -o $target testfltfmt.$O
+
+testprint: testprint.$O $XLIB
+	$LD -o $target testprint.$O
+
+# debugging only - should go away (5/22/2006)
+testgoogfmt: testfltfmt.$O googfmt.$O $XLIB
+	$LD -o $target testfltfmt.$O googfmt.$O
+
+testgoogprint: testprint.$O googfmt.$O $XLIB
+	$LD -o $target testprint.$O googfmt.$O

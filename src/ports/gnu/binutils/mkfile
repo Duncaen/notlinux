@@ -1,0 +1,6 @@
+pkg=binutils
+ver=2.27
+
+url=https://ftp.gnu.org/gnu/binutils/binutils-${ver}.tar.gz
+
+<$root/src/mkport

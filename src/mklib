@@ -1,0 +1,18 @@
+<$root/src/mkconf
+
+AFLAGS=
+
+all:V: $LIB
+
+# force archive even when not needed
+%.a:V: $OFILES
+	$AR rc $target $newprereq
+	$RANLIB $target
+
+&:n: &.$O
+	$AR rc $target $stem.$O
+	$RANLIB $target
+
+NUKEFILES=$NUKEFILES $LIB
+
+<$root/src/mkcommon

@@ -1,0 +1,18 @@
+pkg=lr
+ver=v0.3.2
+
+git=git@github.com:chneukirchen/lr.git
+
+<$root/src/mkport
+
+TARG=\
+	lr\
+
+OFILES=\
+	${TARG}.o\
+
+<$root/src/mkcmd
+
+build:QV:
+	cd src/${wrk}
+	mk $MKFLAGS

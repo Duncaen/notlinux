@@ -1,0 +1,12 @@
+DIRS=`for d in [!_]*/; do echo ${d%/}; done`
+
+all:V:
+	for d in ${DIRS}; do
+		(cd $d && mk $MKFLAGS)
+	done
+
+clean:V:
+	for d in ${DIRS}; do
+		(cd $d && mk $MKFLAGS $target)
+	done
+

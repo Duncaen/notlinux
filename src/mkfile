@@ -1,0 +1,14 @@
+DIRS=\
+	lib\
+	cmd\
+	sys\
+
+all:V:
+	for d in ${DIRS}; do
+		(cd $d && mk $MKFLAGS)
+	done
+
+clean:V:
+	for d in ${DIRS}; do
+		(cd $d && mk $MKFLAGS $target)
+	done

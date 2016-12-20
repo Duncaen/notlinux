@@ -1,0 +1,7 @@
+TARG=\
+	lr\
+
+OFILES=\
+	${TARG}.o\
+
+<$root/src/mkcmd

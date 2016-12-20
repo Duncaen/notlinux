@@ -1,0 +1,29 @@
+$O.% $O.out:
+	$LD -o $target $prereq $LDFLAGS $LIBS
+
+# don't combine with following %.$O rules
+%.$O: $HFILES
+
+%.$O: %.c
+	$CC $CFLAGS $CPPFLAGS -c $stem.c -o $target
+
+%.$O: %.s
+	$AS $AFLAGS $stem.s
+
+%.$O: %.S$MACOSINF
+	$AS $ASFLAGS -o $target $stem.S
+
+y.tab.h y.tab.c: $YFILES
+
+nuke:V: nuke-common
+clean:V: clean-common
+%.clean:V: %.clean-common
+
+nuke-common:V: clean-common
+	rm -f $NUKEFILES
+
+clean-common:V:
+	rm -f *.[$OS] [$OS].* *.$O y.tab.[ch] $CLEANFILES
+
+%.clean-common:V:
+	rm -f $stem.[$OS] [$OS].$stem $stem.acid $stem

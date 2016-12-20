@@ -1,0 +1,8 @@
+pkg=netbsd-curses
+ver=0.1.1
+
+url=https://github.com/sabotage-linux/netbsd-curses/archive/v${ver}.tar.gz
+
+cfg=\
+
+<$root/src/mkport

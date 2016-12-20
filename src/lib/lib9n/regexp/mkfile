@@ -1,0 +1,25 @@
+root=../..
+<$root/src/cmd/mkhdr
+
+LIB=$root/$objtype/lib/libregexp9.a
+
+OFILES=\
+	regcomp.$O\
+	regerror.$O\
+	regexec.$O\
+	regsub.$O\
+	regaux.$O\
+	rregexec.$O\
+	rregsub.$O\
+
+HFILES=\
+	$root/src/include/regexp.h\
+	regcomp.h\
+
+<$root/src/cmd/mksyslib
+
+test: test.$O $OFILES $LIB
+	$LD -o test $prereq
+
+test2: test2.$O $OFILES $LIB
+	$LD -o test2 $prereq
