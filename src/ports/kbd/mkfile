@@ -1,0 +1,7 @@
+pkg=kbd
+ver=2.0.3
+
+url=https://www.kernel.org/pub/linux/utils/kbd/kbd-${ver}.tar.xz
+sig=${url%.xz=.sign}
+
+<$root/src/mkport
