@@ -1,0 +1,10 @@
+pkg=dash
+ver=0.5.9
+
+url=http://gondor.apana.org.au/~herbert/dash/files/dash-${ver}.tar.gz
+sig=${url}.sha256sum
+
+cfg=\
+	--enable-static\
+
+<$root/src/mkport
