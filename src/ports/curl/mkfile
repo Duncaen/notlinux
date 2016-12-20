@@ -1,0 +1,7 @@
+pkg=curl
+ver=7.51.0
+
+url=https://curl.haxx.se/download/curl-${ver}.tar.gz
+sig=${url}.asc
+
+<$root/src/mkport
