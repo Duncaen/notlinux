@@ -1,0 +1,7 @@
+pkg=nginx
+ver=1.11.7
+
+url=https://nginx.org/download/nginx-${ver}.tar.gz
+sig=${url}.sig
+
+<$root/src/mkport
