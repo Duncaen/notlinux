@@ -1,0 +1,7 @@
+pkg=xz
+ver=5.2.2
+
+url=http://tukaani.org/xz/xz-${ver}.tar.xz
+sig=${url}.sig
+
+<$root/src/mkport
