@@ -1,0 +1,7 @@
+pkg=git
+ver=2.11.0
+
+url=https://www.kernel.org/pub/software/scm/git/git-${ver}.tar.xz
+sig=${url%.xz=.sign}
+
+<$root/src/mkport
