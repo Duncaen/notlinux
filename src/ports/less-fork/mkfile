@@ -1,0 +1,10 @@
+pkg=less-fork
+ver=1.0.0
+
+url=https://github.com/gdamore/less-fork/archive/v${ver}.tar.gz
+
+makeargs=\
+	STD=SUSv4\
+	SYSNAME=\
+
+<$root/src/mkport
