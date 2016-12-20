@@ -1,0 +1,7 @@
+pkg=bash
+ver=4.4
+
+url=https://ftp.gnu.org/gnu/bash/bash-${ver}.tar.gz
+sig=${url}.sig
+
+<$root/src/mkport
