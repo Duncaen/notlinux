@@ -1,0 +1,7 @@
+pkg=m4
+ver=1.4.17
+
+url=http://ftp.gnu.org/gnu/m4/m4-${ver}.tar.xz
+sig=${url}.sig
+
+<$root/src/mkport
