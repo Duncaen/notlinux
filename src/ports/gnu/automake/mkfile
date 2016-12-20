@@ -1,0 +1,7 @@
+pkg=automake
+ver=1.15
+
+url=https://ftp.gnu.org/gnu/${pkg}/${pkg}-${ver}.tar.xz
+sig=${url}.sig
+
+<$root/src/mkport
