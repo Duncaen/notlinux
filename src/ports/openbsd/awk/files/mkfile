@@ -1,0 +1,45 @@
+LIB=\
+	$root/$objtype/lib/libopenbsd.a\
+
+TARG=\
+	awk\
+
+OFILES=\
+	proctab.o\
+	b.o\
+	lex.o\
+	lib.o\
+	main.o\
+	parse.o\
+	run.o\
+	tran.o\
+	y.tab.o\
+
+HFILES=\
+	awk.h\
+	proto.h\
+	ytab.h\
+
+YFILES=\
+	awkgram.y\
+
+CLEANFILES=\
+	ytab.h\
+	proctab.c\
+
+CPPFLAGS=\
+	-include openbsd.h\
+	${CPPFLAGS}\
+
+<$root/src/mkcmd
+
+o.maketab: ytab.h
+
+o.maketab: maketab.c
+	$BUILDCC $BUILDCFLAGS -o $target maketab.c
+
+proctab.c: o.maketab
+	./o.maketab >$target
+
+ytab.h: y.tab.h
+	cmp -s $target $prereq || cp $prereq $target
