@@ -1,0 +1,31 @@
+--- ./date.c
++++ ./date.c
+@@ -43,7 +43,6 @@
+ #include <syslog.h>
+ #include <time.h>
+ #include <unistd.h>
+-#include <util.h>
+ 
+ extern	char *__progname;
+ 
+@@ -238,16 +238,20 @@
+ 		if (adjtime(&tv, NULL) == -1)
+ 			errx(1, "adjtime");
+ 	} else {
++#if 0
+ #ifndef SMALL
+ 		logwtmp("|", "date", "");
+ #endif
++#endif
+ 		tv.tv_sec = tval;
+ 		tv.tv_usec = 0;
+ 		if (settimeofday(&tv, NULL))
+ 			err(1, "settimeofday");
++#if 0
+ #ifndef SMALL
+ 		logwtmp("{", "date", "");
+ #endif
++#endif
+ 	}
+ 
+ 	if ((p = getlogin()) == NULL)
