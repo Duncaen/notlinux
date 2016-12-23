@@ -1,0 +1,8 @@
+pkg=xe
+ver=0.6.1
+
+url=https://github.com/chneukirchen/xe/archive/v${ver}.tar.gz
+
+build_style=mk
+
+<$root/src/mkport
