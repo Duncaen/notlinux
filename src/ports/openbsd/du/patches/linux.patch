@@ -1,0 +1,13 @@
+--- du.c
++++ du.c
+@@ -44,9 +44,8 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+-#include <sys/tree.h>
++#include <openbsd-tree.h>
+ #include <unistd.h>
+-#include <util.h>
+ 
+ 
+ int	 linkchk(FTSENT *);
