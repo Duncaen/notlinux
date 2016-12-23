@@ -1,0 +1,23 @@
+LIB=\
+	$root/$objtype/lib/libopenbsd.a\
+	$root/$objtype/lib/libz.a\
+
+TARG=\
+	grep\
+
+OFILES=\
+	${TARG}.o\
+	binary.o\
+	file.o\
+	mmfile.o\
+	queue.o\
+	util.o\
+
+HFILES=\
+	grep.h\
+
+CPPFLAGS=\
+	-include openbsd.h\
+	${CPPFLAGS}\
+
+<$root/src/mkcmd

@@ -1,0 +1,36 @@
+--- grep.c
++++ grep.c
+@@ -28,7 +28,7 @@
+ 
+ #include <sys/types.h>
+ #include <sys/stat.h>
+-#include <sys/queue.h>
++#include <openbsd-queue.h>
+ 
+ #include <ctype.h>
+ #include <err.h>
+@@ -44,7 +44,12 @@
+ 
+ /* Flags passed to regcomp() and regexec() */
+ int	 cflags;
++#if 0
++/* XXX: PORT: does this work? */
+ int	 eflags = REG_STARTEND;
++#else
++int	 eflags;
++#endif
+ 
+ int	 matchall;	/* shortcut */
+ int	 patterns, pattern_sz;
+@@ -450,8 +455,11 @@
+ 		warnx("warning: recursive search of stdin");
+ 	if (Eflag)
+ 		cflags |= REG_EXTENDED;
++#if 0
++	/* XXX: PORT: test if this is really not needed */
+ 	if (Fflag)
+ 		cflags |= REG_NOSPEC;
++#endif
+ #ifdef SMALL
+ 	/* Sorry, this won't work */
+ 	if (Fflag && wflag)

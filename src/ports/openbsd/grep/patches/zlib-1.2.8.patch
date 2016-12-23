@@ -1,0 +1,38 @@
+--- file.c.orig
++++ file.c
+@@ -48,12 +48,12 @@
+ 	int	 noseek;
+ 	FILE	*f;
+ 	mmf_t	*mmf;
+-	gzFile	*gzf;
++	gzFile	gzf;
+ };
+ 
+ #ifndef NOZ
+ static char *
+-gzfgetln(gzFile *f, size_t *len)
++gzfgetln(gzFile f, size_t *len)
+ {
+ 	size_t		n;
+ 	int		c;
+--- binary.c.orig
++++ binary.c
+@@ -62,7 +62,7 @@
+ 
+ #ifndef NOZ
+ int
+-gzbin_file(gzFile *f)
++gzbin_file(gzFile f)
+ {
+ 	char		buf[BUFSIZ];
+ 	int		m;
+--- grep.h.orig
++++ grep.h
+@@ -119,6 +119,6 @@
+ 
+ /* binary.c */
+ int		 bin_file(FILE * f);
+-int		 gzbin_file(gzFile * f);
++int		 gzbin_file(gzFile f);
+ int		 mmbin_file(mmf_t *f);
+ 
