@@ -1,0 +1,10 @@
+pkg=containers
+ver=1.5
+
+url=https://github.com/arachsys/containers/archive/containers-${ver}.tar.gz
+
+build_style=mk
+
+<$root/src/mkport
+
+wrk=${pkg}-${pkg}-${ver}

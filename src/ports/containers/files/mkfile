@@ -1,0 +1,7 @@
+all:V: o.contain o.inject o.pseudo
+
+o.contain: contain.o console.o map.o mount.o util.o
+o.inject: inject.o map.o util.o
+o.pseudo: pseudo.o map.o util.o
+
+<$root/src/mkcommon

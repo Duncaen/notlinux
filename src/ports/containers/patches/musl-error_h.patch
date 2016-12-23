@@ -1,0 +1,212 @@
+From 646c6d938ce3765820ee0db1d8e693c20ab1f108 Mon Sep 17 00:00:00 2001
+From: Chris Webb <chris@arachsys.com>
+Date: Sat, 17 Sep 2016 19:48:55 +0100
+Subject: [PATCH] Provide our own definition of error()
+
+Duncan Overbruck <administrator@duncano.de> points out that error.h is
+glibc-specific and isn't available in musl or uclibc. Fix containers to
+build correctly on musl by providing a private definition of error().
+---
+ console.c |  1 -
+ contain.c |  8 ++++----
+ contain.h |  3 +++
+ inject.c  |  8 ++++----
+ map.c     |  1 -
+ mount.c   |  1 -
+ pseudo.c  |  6 +++---
+ util.c    | 18 +++++++++++++++++-
+ 8 files changed, 31 insertions(+), 15 deletions(-)
+
+--- console.c
++++ console.c
+@@ -1,6 +1,5 @@
+ #define _GNU_SOURCE
+ #include <errno.h>
+-#include <error.h>
+ #include <fcntl.h>
+ #include <limits.h>
+ #include <poll.h>
+--- contain.c
++++ contain.c
+@@ -1,6 +1,5 @@
+ #define _GNU_SOURCE
+ #include <errno.h>
+-#include <error.h>
+ #include <fcntl.h>
+ #include <grp.h>
+ #include <sched.h>
+@@ -15,7 +14,7 @@
+ #include <sys/types.h>
+ #include "contain.h"
+ 
+-void usage(char *progname) {
++void usage(void) {
+   fprintf(stderr, "\
+ Usage: %s [OPTIONS] DIR [CMD [ARG]...]\n\
+ Options:\n\
+@@ -35,6 +34,7 @@ int main(int argc, char **argv) {
+   int hostnet = 0, master, option, stdio = 0;
+   pid_t child, parent;
+ 
++  progname = argv[0];
+   while ((option = getopt(argc, argv, "+:cg:i:no:u:")) > 0)
+     switch (option) {
+       case 'c':
+@@ -56,11 +56,11 @@ int main(int argc, char **argv) {
+         uidmap = optarg;
+         break;
+       default:
+-        usage(argv[0]);
++        usage();
+     }
+ 
+   if (argc <= optind)
+-    usage(argv[0]);
++    usage();
+ 
+   parent = getpid();
+   switch (child = fork()) {
+--- contain.h
++++ contain.h
+@@ -11,10 +11,13 @@
+ #define idname(type) ((type) == GID ? "GID" : "UID")
+ #define subpath(type) ((type) == GID ? "/etc/subgid" : "/etc/subuid")
+ 
++extern char *progname;
++
+ extern char *append(char **destination, const char *format, ...);
+ extern void createroot(char *src, int console, char *helper);
+ extern void denysetgroups(pid_t pid);
+ extern void enterroot(void);
++extern void error(int status, int errnum, char *format, ...);
+ extern int getconsole(void);
+ extern void mountproc(void);
+ extern void mountsys(void);
+--- inject.c
++++ inject.c
+@@ -1,7 +1,6 @@
+ #define _GNU_SOURCE
+ #include <dirent.h>
+ #include <errno.h>
+-#include <error.h>
+ #include <fcntl.h>
+ #include <grp.h>
+ #include <sched.h>
+@@ -60,7 +59,7 @@ void join(pid_t pid, char *type) {
+   free(path);
+ }
+ 
+-void usage(char *progname) {
++void usage(void) {
+   fprintf(stderr, "Usage: %s PID [CMD [ARG]...]\n", progname);
+   exit(64);
+ }
+@@ -73,12 +72,13 @@ int main(int argc, char **argv) {
+   DIR *dir;
+   FILE *file;
+ 
++  progname = argv[0];
+   if (argc < 2)
+-    usage(argv[0]);
++    usage();
+ 
+   parent = strtol(argv[1], &end, 10);
+   if (end == argv[1] || *end)
+-    usage(argv[0]);
++    usage();
+ 
+   if (geteuid() != getuid())
+     error(1, 0, "setuid installation is unsafe");
+--- map.c
++++ map.c
+@@ -1,6 +1,5 @@
+ #define _GNU_SOURCE
+ #include <errno.h>
+-#include <error.h>
+ #include <grp.h>
+ #include <fcntl.h>
+ #include <pwd.h>
+--- mount.c
++++ mount.c
+@@ -1,6 +1,5 @@
+ #define _GNU_SOURCE
+ #include <errno.h>
+-#include <error.h>
+ #include <fcntl.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+--- pseudo.c
++++ pseudo.c
+@@ -1,6 +1,5 @@
+ #define _GNU_SOURCE
+ #include <errno.h>
+-#include <error.h>
+ #include <grp.h>
+ #include <sched.h>
+ #include <signal.h>
+@@ -10,7 +9,7 @@
+ #include <unistd.h>
+ #include "contain.h"
+ 
+-void usage(char *progname) {
++void usage() {
+   fprintf(stderr, "\
+ Usage: %s [OPTIONS] [CMD [ARG]...]\n\
+ Options:\n\
+@@ -26,6 +25,7 @@ int main(int argc, char **argv) {
+   int option;
+   pid_t child, parent;
+ 
++  progname = argv[0];
+   while ((option = getopt(argc, argv, "+:g:u:")) > 0)
+     switch (option) {
+       case 'g':
+@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
+         uidmap = optarg;
+         break;
+       default:
+-        usage(argv[0]);
++        usage();
+     }
+ 
+   parent = getpid();
+--- util.c
++++ util.c
+@@ -1,6 +1,5 @@
+ #define _GNU_SOURCE
+ #include <errno.h>
+-#include <error.h>
+ #include <stdarg.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+@@ -9,6 +8,8 @@
+ #include <sys/wait.h>
+ #include "contain.h"
+ 
++char *progname;
++
+ char *append(char **destination, const char *format, ...) {
+   char *extra, *result;
+   va_list args;
+@@ -31,6 +32,21 @@ char *append(char **destination, const char *format, ...) {
+   return result;
+ }
+ 
++void error(int status, int errnum, char *format, ...) {
++  va_list args;
++
++  fprintf(stderr, "%s: ", progname);
++  va_start(args, format);
++  vfprintf(stderr, format, args);
++  va_end(args);
++  if (errnum != 0)
++    fprintf(stderr, ": %s\n", strerror(errnum));
++  else
++    fputc('\n', stderr);
++  if (status != 0)
++    exit(status);
++}
++
+ char *string(const char *format, ...) {
+   char *result;
+   va_list args;
