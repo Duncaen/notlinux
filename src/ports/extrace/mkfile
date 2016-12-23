@@ -1,0 +1,8 @@
+pkg=extrace
+ver=0.3
+
+url=https://github.com/chneukirchen/extrace/archive/v${ver}.tar.gz
+
+build_style=mk
+
+<$root/src/mkport
