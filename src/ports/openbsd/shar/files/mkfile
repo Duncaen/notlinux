@@ -1,0 +1,9 @@
+<$root/src/mkconf
+
+all:QV:
+	true
+
+<$root/src/mkcommon
+
+install:V:
+	$INSTALL shar.sh $BINDIR/shar
