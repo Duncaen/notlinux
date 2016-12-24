@@ -2,10 +2,10 @@
 
 AFLAGS=
 
-all:V: $LIB
+all:V: ${LIB:=%.a}
 
 # force archive even when not needed
-%.a:V: $OFILES
+${LIB:=%.a}:V: $OFILES
 	$AR rc $target $newprereq
 	$RANLIB $target
 
@@ -13,6 +13,16 @@ all:V: $LIB
 	$AR rc $target $stem.$O
 	$RANLIB $target
 
-NUKEFILES=$NUKEFILES $LIB
+install:V: install-lib
+
+install-lib:V: ${LIB:=$LIBDIR/%.a} ${LIB:=$LIBDIR/%.mk}
+
+${LIBDIR}/%.a: %.a
+	install $prereq $target
+
+${LIBDIR}/%.mk: %.mk
+	install $prereq $target
+
+NUKEFILES=$NUKEFILES $LIB ${LIB:.a=.mk}
 
 <$root/src/mkcommon

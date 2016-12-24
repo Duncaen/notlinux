@@ -1,5 +1,4 @@
-LIB=\
-	$root/$objtype/lib/libopenbsd.a\
+LIBS=libopenbsd
 
 TARG=\
 	calendar\
@@ -11,9 +10,5 @@ OFILES=\
 	pesach.$O\
 	ostern.$O\
 	paskha.$O\
-
-CPPFLAGS=\
-	-include openbsd.h\
-	${CPPFLAGS}\
 
 <$root/src/mkcmd

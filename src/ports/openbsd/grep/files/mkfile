@@ -1,6 +1,4 @@
-LIB=\
-	$root/$objtype/lib/libopenbsd.a\
-	$root/$objtype/lib/libz.a\
+LIBS=libopenbsd libz
 
 TARG=\
 	grep\
@@ -15,9 +13,5 @@ OFILES=\
 
 HFILES=\
 	grep.h\
-
-CPPFLAGS=\
-	-include openbsd.h\
-	${CPPFLAGS}\
 
 <$root/src/mkcmd

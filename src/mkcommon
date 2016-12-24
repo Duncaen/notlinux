@@ -1,5 +1,5 @@
 $O.% $O.out:
-	$LD -o $target $prereq $LDFLAGS $LIBS
+	$LD -o $target $prereq $LDFLAGS
 
 # don't combine with following %.$O rules
 %.$O: $HFILES
@@ -14,6 +14,14 @@ $O.% $O.out:
 	$AS $ASFLAGS -o $target $stem.S
 
 y.tab.h y.tab.c: $YFILES
+	$YACC $YFLAGS $prereq
+
+install:V:
+
+%.install:V: $BINDIR/%
+
+$BINDIR/%: $O.%
+	$INSTALL $O.$stem $BINDIR/$stem
 
 nuke:V: nuke-common
 clean:V: clean-common

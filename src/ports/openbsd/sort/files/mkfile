@@ -1,5 +1,4 @@
-LIB=\
-	$root/$objtype/lib/libopenbsd.a\
+LIBS=libopenbsd
 
 TARG=\
 	sort\
@@ -22,9 +21,5 @@ HFILES=\
 	sort.h\
 	vsort.h\
 
-
-CPPFLAGS=\
-	-include openbsd.h\
-	${CPPFLAGS}\
 
 <$root/src/mkcmd

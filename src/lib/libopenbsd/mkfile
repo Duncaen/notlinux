@@ -1,6 +1,6 @@
 <$root/src/mkconf
 
-LIB=$root/$objtype/lib/libopenbsd.a
+LIB=libopenbsd
 
 HASH_HELPER=\
 	hash/md5hl.c\

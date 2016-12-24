@@ -1,64 +1,110 @@
+<$root/src/mkconf
+
+`export \
+	CC=$CC \
+	LD=$LD \
+	CFLAGS=$CFLAGS \
+	LDFLAGS=$LDFLAGS \
+	BUILDCC=$BUILDCC \
+	BUILDLD=$BUILDLD \
+	HOSTCC=$HOSTCC \
+	HOSTLD=$HOSTLD \
+	DESTDIR=$root \
+	BINDIR=$objtype/bin \
+	LIBDIR=$objtype/lib \
+	INCDIR=$objtype/src/include \
+`
+
 wrk=$pkg-$ver
 pwd=`pwd`
 
 quiet=
 
+update=
+
+distfile=`fname=${url##*>}; [ "$url" = "$fname" ] && fname=${fname##*/}; printf "%s" "$fname"`
+
 # FILES=`lr files "files-${ver}"`
 # PATCHES=`lr patches "patches-${ver}"`
 
-default:V: fetch build
+src/.done-$pkg-$ver: src/.fetch-$pkg-$ver src/.config-$pkg-$ver src/.build-$pkg-$ver src/.install-$pkg-$ver
+	touch $target
 
-fetch:V: fetch-prepare fetch-cvs fetch-git fetch-url fetch-post
+src/.fetch-$pkg-$ver:Q: do-fetch post-fetch
+	touch $target
 
-build:V: fetch
+src/.config-$pkg-$ver:Q: do-config
+	touch $target
 
-fetch-prepare:QV:
+src/.build-$pkg-$ver:Q: do-build
+	touch $target
+
+src/.install-$pkg-$ver:Q: do-install
+	touch $target
+
+fetch:V: src/.fetch-$pkg-$ver
+config:V: src/.config-$pkg-$ver
+build:V: src/.build-$pkg-$ver
+install:V: src/.install-$pkg-$ver
+clean:V: pre-clean do-clean post-clean
+
+pre-%:QV:
+	true
+
+post-%:QV:
+	true
+
+do-fetch:QV:
 	[ -d "src" ] || mkdir -p "src"
-
-# cvs - mirror
-# cvs_rev - branch/version/revision
-# cvs_mod - module
-fetch-cvs:QV:
-	[ "$cvs" ] || return 0
-	(
+	[ -z "$cvs" ] || (
 		cd src
 		[ -d "$wrk" ] \
-			&& cvs ${quiet:+"-q"} up -r"$cvs_rev" -d "$wrk" \
+			&& { [ -z "$update" ] || cvs ${quiet:+"-q"} up -r"$cvs_rev" -d "$wrk"; } \
 			|| cvs ${quiet:+"-q"} -d "$cvs" get -r"$cvs_rev" -d "$wrk" "$cvs_mod"
 	)
-
-# git - remote
-# git_rev - revision, default $ver
-fetch-git:QV:
-	[ "$git" ] || return 0
-	(
+	[ -z "$git" ] || (
 		cd src
 		[ -d "$wrk" ] \
 			|| git clone ${quiet:+"-q"} "$git" "$wrk" \
 			&& cd "$wrk"
 		git reset ${quiet:+"-q"} --hard && git checkout "${git_rev:=$ver}"
 	)
-
-fetch-url:QV:
-	[ "$url" ] || return 0
-	[ -d "$wrk" ] && return 0
-	(
+	[ -z "$url" ] || (
 		cd src
-		fname=${url##*>}
-		[ "$url" = "$fname" ] && fname=${fname##*/}
-		wget -nv -c -O "$fname" "$url"
-		case "$fname" in
-		*.tar*) tar xfv "$fname" ;;
-		esac
+		[ -e "$distfile" ] \
+			|| wget ${quiet:+"-nv"} -c -O "$distfile" "$url"
+		[ -d "$wrk" ] \
+			|| case "$distfile" in
+				*.tar*|*.tgz) tar xfv "$distfile" ;;
+				esac
 	)
+	[ ! -d ./files ] || cp -r ./files/* "src/${wrk}/"
+	[ ! -d ./patches ] || for p in ./patches/*; do
+		patch --dry-run -d "src/${wrk}" -Np0 <"$p" 2>/dev/null \
+			&& patch -d "src/${wrk}" -Np0 <"$p" || true
+	done
 
-fetch-post:V:
-	cp -r files/* "src/${wrk}"
+do-config:QV:
+	cd "src/${wrk}"
+	[ ! -e ./configure ] || ./configure --prefix=/usr $cfg
 
-build:V:
-	cd "${wrk}"
-	[ -e ./configure ] \
-		&& ./configure \
-			--prefix=/usr \
-			$cfg
-	make
+do-build:QV:
+	cd "src/${wrk}"
+	case "${build_style=make}" in
+	make) make $makeargs ;;
+	mk) mk $MKFLAGS ;;
+	esac
+
+do-install:QV:
+	cd "src/${wrk}"
+	case "${build_style:-make}" in
+	make) make $make_install_args ${make_install_target:-install} ;;
+	mk) mk $MKFLAGS $make_install_args ${make_install_target:-install} ;;
+	esac
+
+do-clean:QV:
+	cd "src/${wrk}"
+	case "${build_style:-make}" in
+	make) make $make_clean_args ${make_clean_target:-clean} ;;
+	mk) mk $MKFLAGS $make_clean_args ${make_clean_target:-clean} ;;
+	esac

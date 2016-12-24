@@ -1,5 +1,4 @@
-LIB=\
-	$root/$objtype/lib/libopenbsd.a\
+LIBS=libopenbsd
 
 TARG=\
 	echo\

@@ -1,8 +1,14 @@
 <$root/src/mkconf
 
+# load CFLAGS and LDFLAGS for libs automatically
+<|for l in $LIBS; do printf \'<$root/$objtype/lib/%s.mk\\\n\' "$l"; done
+CFLAGS_LIBS = `for l in $LIBS; do printf '${CFLAGS_%s} ' "$l"; done`
+CPPFLAGS_LIBS = `for l in $LIBS; do printf '${CPPFLAGS_%s} ' "$l"; done`
+LDFLAGS_LIBS = `for l in $LIBS; do printf '${LDFLAGS_%s} ' "$l"; done`
+
 all:V: $O.$TARG
 
-$TARG:V: $O.$TARG
+${TARG}:V: $O.$TARG
 
 $O.$TARG: $OFILES $LIB
 
@@ -12,3 +18,15 @@ CLEANFILES=$CLEANFILES $TARG
 NUKEFILES=$NUKEFILES $BIN/$TARG
 
 <$root/src/mkcommon
+
+CFLAGS=\
+	${CFLAGS}\
+	${CFLAGS_LIBS}\
+
+CPPFLAGS=\
+	${CPPFLAGS}\
+	${CPPFLAGS_LIBS}\
+
+LDFLAGS=\
+	${LDFLAGS}\
+	${LDFLAGS_LIBS}\

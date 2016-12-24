@@ -1,5 +1,4 @@
-LIB=\
-	$root/$objtype/lib/libopenbsd.a\
+LIBS=libopenbsd
 
 TARG=\
 	awk\
@@ -26,10 +25,6 @@ YFILES=\
 CLEANFILES=\
 	ytab.h\
 	proctab.c\
-
-CPPFLAGS=\
-	-include openbsd.h\
-	${CPPFLAGS}\
 
 <$root/src/mkcmd
 

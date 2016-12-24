@@ -1,5 +1,4 @@
-LIB=\
-	$root/$objtype/lib/libopenbsd.a\
+LIBS=libopenbsd
 
 TARG=\
 	ed\
@@ -13,9 +12,5 @@ OFILES=\
 	sub.$O\
 	undo.$O\
 
-CPPFLAGS=\
-	-include openbsd.h\
 	-DBACKWARDS\
-	${CPPFLAGS}\
-
 <$root/src/mkcmd

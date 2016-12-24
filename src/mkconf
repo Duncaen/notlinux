@@ -4,16 +4,45 @@ O       = o
 OS      = o
 
 
-AR    = $objtype-ar
-AS    = ${CC} -c
-CC    = $objtype-gcc
-LD    = $objtype-gcc
-RANLIB= $objtype-ranlib
+CC    = ${objtype}-gcc
+LD    = ${objtype}-gcc
+AS    = ${objtype}-as
+
+AR     = ${objtype}-gcc-ar
+RANLIB = ${objtype}-gcc-ranlib
+
 YACC  = yacc
 LEX   = lex
 
-CFLAGS = -fPIC -isystem $root/src/include
-LDFLAGS= -static
-AFLAGS =
-YFLAGS =-d
+CFLAGS_HARD  = -fstack-protector-strong -D_FORTIFY_SOURCE=2 -fPIC
+CFLAGS_OPTI  = -O2 -flto
+CFLAGS_DEBUG = -O2 -flto
 
+CFLAGS  = ${CFLAGS_OPTI} ${CFLAGS_HARD} -isystem $root/src/include -I $root/$objtype/src/include
+
+LDFLAGS_HARD  = -Wl,--as-needed -Wl,-z,relro -Wl,-z,now
+LDFLAGS_OPTI  = -static -flto
+LDFLAGS_DEBUG =
+
+LDFLAGS = ${LDFLAGS_OPTI} ${LDFLAGS_HARD} -L $root/$objtype/lib
+
+
+AFLAGS  =
+YFLAGS  =-d
+
+BUILDCC = gcc
+BUILDLD = gcc
+
+BUILDCFLAGS  =
+BUILDLDFLAGS =
+
+HOSTCC  = ${BUILDCC}
+HOSTLD  = ${BUILDLD}
+
+HOST_CFLAGS = ${BUILDLCFLAGS}
+HOST_LDFLAGS = ${BUILDLDFLAGS}
+
+INSTALL = install
+
+BINDIR = $root/$objtype/bin
+LIBDIR = $root/$objtype/lib

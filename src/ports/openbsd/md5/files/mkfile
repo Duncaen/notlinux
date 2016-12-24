@@ -1,5 +1,4 @@
-LIB=\
-	$root/$objtype/lib/libopenbsd.a\
+LIBS=libopenbsd
 
 TARG=\
 	md5\
@@ -9,7 +8,6 @@ OFILES=\
 	crc.$O\
 
 CPPFLAGS=\
-	-include openbsd.h\
 	-I.\
 	${CPPFLAGS}\
 
