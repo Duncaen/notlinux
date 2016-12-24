@@ -2,6 +2,6 @@ TARG=\
 	lr\
 
 OFILES=\
-	${TARG}.o\
+	${TARG}.$O\
 
 <$root/src/mkcmd
