@@ -1,0 +1,19 @@
+LIB=\
+	$root/$objtype/lib/libopenbsd.a\
+
+TARG=\
+	hexdump\
+
+OFILES=\
+	${TARG}.o\
+	conv.$O\
+	display.$O\
+	hexsyntax.$O\
+	odsyntax.$O\
+	parse.$O\
+
+CPPFLAGS=\
+	-include openbsd.h\
+	${CPPFLAGS}\
+
+<$root/src/mkcmd
