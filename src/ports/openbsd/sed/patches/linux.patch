@@ -1,0 +1,35 @@
+--- process.c
++++ process.c
+@@ -519,6 +519,10 @@
+     int nomatch, size_t start, size_t stop)
+ {
+ 	int eval;
++#ifndef REG_STARTEND
++	size_t slen;
++	char *buf;
++#endif
+ 
+ 	if (preg == NULL) {
+ 		if (defpreg == NULL)
+@@ -527,11 +531,20 @@
+ 		defpreg = preg;
+ 
+ 	/* Set anchors */
++#ifndef REG_STARTEND
++	slen = stop - start;
++	buf = xmalloc(slen + 1);
++	(void)memcpy(buf, string + start, slen);
++	buf[slen] = '\0';
++	eval = regexec(defpreg, buf,
++	    nomatch ? 0 : maxnsub + 1, match, eflags);
++	free(buf);
++#else
+ 	match[0].rm_so = start;
+ 	match[0].rm_eo = stop;
+-
+ 	eval = regexec(defpreg, string,
+ 	    nomatch ? 0 : maxnsub + 1, match, eflags | REG_STARTEND);
++#endif
+ 	switch (eval) {
+ 	case 0:
+ 		return (1);
