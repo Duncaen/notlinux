@@ -1,0 +1,10 @@
+--- mknod.c.orig
++++ mknod.c
+@@ -32,6 +32,7 @@
+ #include <unistd.h>
+ 
+ extern char *__progname;
++extern int optreset;
+ 
+ struct node {
+ 	const char *name;

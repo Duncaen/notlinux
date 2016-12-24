@@ -1,0 +1,12 @@
+LIBS=libopenbsd
+
+TARG=\
+	mknod\
+
+LINKS=\
+	mkfifo\
+
+OFILES=\
+	${TARG}.o\
+
+<$root/src/mkcmd
