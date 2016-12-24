@@ -1,0 +1,47 @@
+--- calendar.c
++++ calendar.c
+@@ -29,13 +29,16 @@
+  * SUCH DAMAGE.
+  */
+ 
++#define _GNU_SOURCE
+ #include <sys/stat.h>
+ #include <sys/types.h>
+ #include <sys/wait.h>
+ #include <err.h>
+ #include <errno.h>
+ #include <locale.h>
++#if 0
+ #include <login_cap.h>
++#endif
+ #include <pwd.h>
+ #include <signal.h>
+ #include <stdio.h>
+@@ -44,6 +47,7 @@
+ #include <limits.h>
+ #include <time.h>
+ #include <unistd.h>
++#include <grp.h>
+ 
+ #include "pathnames.h"
+ #include "calendar.h"
+@@ -190,10 +194,19 @@
+ 			case 0:	/* child */
+ 				(void)setpgid(getpid(), getpid());
+ 				(void)setlocale(LC_ALL, "");
++#if 0
+ 				if (setusercontext(NULL, pw, pw->pw_uid,
+ 				    LOGIN_SETALL ^ LOGIN_SETLOGIN))
+ 					err(1, "unable to set user context (uid %u)",
+ 					    pw->pw_uid);
++#else
++				if (setresgid(pw->pw_gid, pw->pw_gid, pw->pw_gid) != 0)
++					errx(1, "setresgid");
++				if (initgroups(pw->pw_name, pw->pw_gid) != 0)
++					errx(1, "initgroups");
++				if (setresuid(pw->pw_uid, pw->pw_uid, pw->pw_uid) != 0)
++					errx(1, "setresuid");
++#endif
+ 				if (acstat) {
+ 					if (chdir(pw->pw_dir) ||
+ 					    stat(calendarFile, &sbuf) != 0 ||
