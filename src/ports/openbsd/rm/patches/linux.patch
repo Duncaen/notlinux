@@ -1,0 +1,14 @@
+--- rm.c
++++ rm.c
+@@ -314,7 +314,11 @@
+ 	}
+ 	if (fstatfs(fd, &fsb) == -1)
+ 		goto err;
++#if 0
+ 	bsize = MAXIMUM(fsb.f_iosize, 1024U);
++#else
++	bsize = MAXIMUM(fsb.f_bsize, 1024U);
++#endif
+ 	if ((buf = malloc(bsize)) == NULL)
+ 		err(1, "%s: malloc", file);
+ 
