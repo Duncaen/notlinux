@@ -1,0 +1,11 @@
+--- paste.c
++++ paste.c
+@@ -32,7 +32,7 @@
+  * SUCH DAMAGE.
+  */
+ 
+-#include <sys/queue.h>
++#include <openbsd-queue.h>
+ #include <sys/types.h>
+ #include <err.h>
+ #include <errno.h>
