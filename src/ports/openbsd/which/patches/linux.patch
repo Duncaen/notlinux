@@ -1,0 +1,12 @@
+--- which.c
++++ which.c
+@@ -17,7 +17,9 @@
+  */
+ 
+ #include <sys/stat.h>
++#if 0
+ #include <sys/sysctl.h>
++#endif
+ 
+ #include <err.h>
+ #include <errno.h>
