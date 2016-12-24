@@ -1,0 +1,19 @@
+LIB=\
+	$root/$objtype/lib/libopenbsd.a\
+
+TARG=\
+	indent\
+
+OFILES=\
+	${TARG}.$O\
+	io.$O\
+	lexi.$O\
+	parse.$O\
+	pr_comment.$O\
+	args.$O\
+
+CPPFLAGS=\
+	-include openbsd.h\
+	${CPPFLAGS}\
+
+<$root/src/mkcmd
