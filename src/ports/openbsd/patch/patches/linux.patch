@@ -1,0 +1,21 @@
+--- ed.c
++++ ed.c
+@@ -16,7 +16,7 @@
+  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
+-#include <sys/queue.h>
++#include <openbsd-queue.h>
+ #include <sys/stat.h>
+ 
+ #include <ctype.h>
+--- inp.c
++++ inp.c
+@@ -39,6 +39,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <fcntl.h>
+ 
+ #include "common.h"
+ #include "util.h"

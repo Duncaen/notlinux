@@ -1,0 +1,29 @@
+LIB=\
+	$root/$objtype/lib/libopenbsd.a\
+
+TARG=\
+	patch\
+
+OFILES=\
+	${TARG}.o\
+	backupfile.$O\
+	ed.$O\
+	inp.$O\
+	mkpath.$O\
+	pch.$O\
+	util.$O\
+
+HFILES=\
+	backupfile.h\
+	common.h\
+	ed.h\
+	inp.h\
+	pathnames.h\
+	pch.h\
+	util.h\
+
+CPPFLAGS=\
+	-include openbsd.h\
+	${CPPFLAGS}\
+
+<$root/src/mkcmd
