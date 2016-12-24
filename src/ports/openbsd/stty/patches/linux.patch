@@ -1,0 +1,290 @@
+--- cchar.c.orig
++++ cchar.c
+@@ -32,6 +32,7 @@
+ 
+ #include <sys/types.h>
+ #include <sys/ioctl.h>
++#include <sys/ttydefaults.h>
+ 
+ #include <err.h>
+ #include <limits.h>
+@@ -39,6 +40,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <termios.h>
++#include <unistd.h>
+ 
+ #include "stty.h"
+ #include "extern.h"
+@@ -52,7 +54,9 @@
+  */
+ const struct cchar cchars1[] = {
+ 	{ "discard",	VDISCARD, 	CDISCARD },
++#if 0
+ 	{ "dsusp", 	VDSUSP,		CDSUSP },
++#endif
+ 	{ "eof",	VEOF,		CEOF },
+ 	{ "eol",	VEOL,		CEOL },
+ 	{ "eol2",	VEOL2,		CEOL },
+@@ -64,7 +68,9 @@
+ 	{ "quit",	VQUIT,		CQUIT },
+ 	{ "reprint",	VREPRINT, 	CREPRINT },
+ 	{ "start",	VSTART,		CSTART },
++#if 0
+ 	{ "status",	VSTATUS, 	CSTATUS },
++#endif
+ 	{ "stop",	VSTOP,		CSTOP },
+ 	{ "susp",	VSUSP,		CSUSP },
+ 	{ "time",	VTIME,		CTIME },
+--- modes.c.orig
++++ modes.c
+@@ -31,6 +31,7 @@
+  */
+ 
+ #include <sys/types.h>
++#include <sys/ioctl.h>
+ 
+ #include <stddef.h>
+ #include <string.h>
+@@ -78,8 +79,10 @@
+ 	{ "-clocal",	0, CLOCAL },
+ 	{ "crtscts",	CRTSCTS, 0 },
+ 	{ "-crtscts",	0, CRTSCTS },
++#if 0
+ 	{ "mdmbuf",	MDMBUF, 0 },
+ 	{ "-mdmbuf",	0, MDMBUF },
++#endif
+ 	{ NULL },
+ };
+ 
+@@ -136,8 +139,10 @@
+ 	{ "-echoke",	0, ECHOKE },
+ 	{ "crtkill",	ECHOKE, 0 },
+ 	{ "-crtkill",	0, ECHOKE },
++#if ALTWERASE
+ 	{ "altwerase",	ALTWERASE, 0 },
+ 	{ "-altwerase",	0, ALTWERASE },
++#endif
+ 	{ "iexten",	IEXTEN, 0 },
+ 	{ "-iexten",	0, IEXTEN },
+ 	{ "echonl",	ECHONL, 0 },
+@@ -166,10 +171,12 @@
+ 	{ "-crt",	ECHOK, ECHOE|ECHOKE|ECHOCTL },
+ 	{ "newcrt",	ECHOE|ECHOKE|ECHOCTL, ECHOK|ECHOPRT },
+ 	{ "-newcrt",	ECHOK, ECHOE|ECHOKE|ECHOCTL },
++#if NOKERNINFO
+ 	{ "nokerninfo",	NOKERNINFO, 0 },
+ 	{ "-nokerninfo",0, NOKERNINFO },
+ 	{ "kerninfo",	0, NOKERNINFO },
+ 	{ "-kerninfo",	NOKERNINFO, 0 },
++#endif
+ 	{ "xcase",	XCASE, 0 },
+ 	{ "-xcase",	0, XCASE },
+ 	{ NULL },
+@@ -190,12 +197,16 @@
+ 	{ "-onlret",	0, ONLRET },
+ 	{ "onocr",	ONOCR, 0 },
+ 	{ "-onocr",	0, ONOCR },
++#if OXTABS
+ 	{ "tabs",	0, OXTABS },		/* "preserve" tabs */
+ 	{ "-tabs",	OXTABS, 0 },
+ 	{ "oxtabs",	OXTABS, 0 },
+ 	{ "-oxtabs",	0, OXTABS },
++#endif
++#if ONOEOT
+ 	{ "onoeot",	ONOEOT, 0 },
+ 	{ "-onoeot",	0, ONOEOT },
++#endif
+ 	{ NULL },
+ };
+ 
+--- gfmt.c.orig
++++ gfmt.c
+@@ -31,6 +31,7 @@
+  */
+ 
+ #include <sys/types.h>
++#include <sys/ioctl.h>
+ 
+ #include <err.h>
+ #include <stdio.h>
+@@ -90,7 +91,11 @@
+ 		}
+ 		if (CHK("ispeed")) {
+ 			(void)sscanf(ep, "%ld", &tmp);
++#if 0
+ 			tp->c_ispeed = tmp;
++#else
++			cfsetispeed(tp, tmp);
++#endif
+ 			continue;
+ 		}
+ 		if (CHK("lflag")) {
+@@ -103,7 +108,11 @@
+ 		}
+ 		if (CHK("ospeed")) {
+ 			(void)sscanf(ep, "%ld", &tmp);
++#if 0
+ 			tp->c_ospeed = tmp;
++#else
++			cfsetospeed(tp, tmp);
++#endif
+ 			continue;
+ 		}
+ 		for (cp = cchars1; cp->name != NULL; ++cp)
+--- key.c.orig
++++ key.c
+@@ -29,9 +29,13 @@
+  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+  * SUCH DAMAGE.
+  */
++#ifndef TTYDISC
++#define TTYDISC 0
++#endif
+ 
+ #include <sys/types.h>
+ #include <sys/ioctl.h>
++#include <sys/ttydefaults.h>
+ 
+ #include <err.h>
+ #include <errno.h>
+@@ -61,8 +65,10 @@
+ void	f_sane(struct info *);
+ void	f_size(struct info *);
+ void	f_speed(struct info *);
++#if 0
+ void	f_ostart(struct info *);
+ void	f_ostop(struct info *);
++#endif
+ void	f_tty(struct info *);
+ __END_DECLS
+ 
+@@ -88,8 +94,10 @@
+ 	{ "nl",		f_nl,		F_OFFOK },
+ 	{ "old",	f_tty,		0 },
+ 	{ "ospeed",	f_ospeed,	F_NEEDARG },
++#if 0
+ 	{ "ostart",	f_ostart,	0 },
+ 	{ "ostop",	f_ostop,	0 },
++#endif
+ 	{ "raw",	f_raw,		F_OFFOK },
+ 	{ "rows",	f_rows,		F_NEEDARG },
+ 	{ "sane",	f_sane,		0 },
+@@ -198,6 +206,7 @@
+ void
+ f_extproc(struct info *ip)
+ {
++#if 0
+ 
+ 	if (ip->off) {
+ 		int tmp = 0;
+@@ -207,6 +216,12 @@
+ 		(void)ioctl(ip->fd, TIOCEXT, &tmp);
+ 	}
+ 	ip->set = 1;
++#else
++	if (ip->off)
++		f_sane(ip);
++	else
++		ip->t.c_lflag &= EXTPROC;
++#endif
+ }
+ 
+ void
+@@ -297,7 +312,11 @@
+ 	ip->t.c_iflag = TTYDEF_IFLAG;
+ 	ip->t.c_iflag |= ICRNL;
+ 	/* preserve user-preference flags in lflag */
++#if 0
+ #define	LKEEP	(ECHOKE|ECHOE|ECHOK|ECHOPRT|ECHOCTL|ALTWERASE|TOSTOP|NOFLSH)
++#else
++#define	LKEEP	(ECHOKE|ECHOE|ECHOK|ECHOPRT|ECHOCTL|TOSTOP|NOFLSH)
++#endif
+ 	ip->t.c_lflag = TTYDEF_LFLAG | (ip->t.c_lflag & LKEEP);
+ 	ip->t.c_oflag = TTYDEF_OFLAG;
+ 	ip->set = 1;
+@@ -327,6 +346,7 @@
+ 		err(1, "TIOCSETD");
+ }
+ 
++#if 0
+ void
+ f_ostart(struct info *ip)
+ {
+@@ -340,3 +360,4 @@
+ 	if (ioctl(ip->fd, TIOCSTOP) < 0)
+ 		err(1, "TIOCSTOP");
+ }
++#endif
+--- print.c.orig
++++ print.c
+@@ -31,11 +31,13 @@
+  */
+ 
+ #include <sys/types.h>
++#include <sys/ioctl.h>
+ 
+ #include <stddef.h>
+ #include <stdio.h>
+ #include <string.h>
+ #include <termios.h>
++#include <unistd.h>
+ 
+ #include "stty.h"
+ #include "extern.h"
+@@ -55,6 +57,7 @@
+ 
+ 	cnt = 0;
+ 
++#if TTYDISC
+ 	/* Line discipline. */
+ 	if (ldisc != TTYDISC) {
+ 		switch(ldisc) {
+@@ -78,6 +81,7 @@
+ 			break;
+ 		}
+ 	}
++#endif
+ 
+ 	/* Line speed. */
+ 	ispeed = cfgetispeed(tp);
+@@ -110,12 +114,16 @@
+ 	put("-echonl", ECHONL, 0);
+ 	put("-echoctl", ECHOCTL, 0);
+ 	put("-echoprt", ECHOPRT, 0);
++#if ALTWERASE
+ 	put("-altwerase", ALTWERASE, 0);
++#endif
+ 	put("-noflsh", NOFLSH, 0);
+ 	put("-tostop", TOSTOP, 0);
+ 	put("-flusho", FLUSHO, 0);
+ 	put("-pendin", PENDIN, 0);
++#if NOKERNINFO
+ 	put("-nokerninfo", NOKERNINFO, 0);
++#endif
+ 	put("-extproc", EXTPROC, 0);
+ 	put("-xcase", XCASE, 0);
+ 
+@@ -146,8 +154,12 @@
+ 	put("-onocr", ONOCR, 0);
+ 	put("-onlret", ONLRET, 0);
+ 	put("-olcuc", OLCUC, 0);
++#if OXTABS
+ 	put("-oxtabs", OXTABS, 1);
++#endif
++#if ONOEOT
+ 	put("-onoeot", ONOEOT, 0);
++#endif
+ 
+ 	/* control flags (hardware state) */
+ 	tmp = tp->c_cflag;
+@@ -173,7 +185,9 @@
+ 	put("-clocal", CLOCAL, 0);
+ 	put("-cstopb", CSTOPB, 0);
+ 	put("-crtscts", CRTSCTS, 0);
++#if MDMBUF
+ 	put("-mdmbuf", MDMBUF, 0);
++#endif
+ 
+ 	/* special control characters */
+ 	cc = tp->c_cc;

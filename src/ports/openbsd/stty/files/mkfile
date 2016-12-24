@@ -1,0 +1,14 @@
+LIBS=libopenbsd
+
+TARG=\
+	stty\
+
+OFILES=\
+	${TARG}.o\
+	cchar.$O\
+	gfmt.$O\
+	key.$O\
+	modes.$O\
+	print.$O\
+
+<$root/src/mkcmd
