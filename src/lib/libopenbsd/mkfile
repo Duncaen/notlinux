@@ -30,6 +30,7 @@ OFILES=\
 	random.$O\
 	readpassphrase.$O\
 	reallocarray.$O\
+	setmode.$O\
 	strlcat.$O\
 	strlcpy.$O\
 	strtoimax.$O\
@@ -43,6 +44,7 @@ OFILES=\
 	fmt_scaled.$O\
 	strmode.$O\
 	crypt/arc4random.$O\
+	crypt/arc4random_uniform.$O\
 	crypt/chacha.$O\
 	hash/md5.$O\
 	hash/rmd160.$O\

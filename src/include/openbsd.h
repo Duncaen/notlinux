@@ -149,3 +149,12 @@ int getentropy(void *buf, size_t len);
 #define SHA512_CTX SHA2_CTX
 #define SHA512_Init SHA512Init
 #define SHA512_Final SHA512Final
+
+/* setmode.c */
+mode_t getmode(const void *, mode_t);
+void *setmode(const char *);
+
+/* crypt */
+uint32_t arc4random(void);
+void arc4random_buf(void *, size_t);
+uint32_t arc4random_uniform(uint32_t);
