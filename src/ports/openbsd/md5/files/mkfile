@@ -1,0 +1,16 @@
+LIB=\
+	$root/$objtype/lib/libopenbsd.a\
+
+TARG=\
+	md5\
+
+OFILES=\
+	${TARG}.$O\
+	crc.$O\
+
+CPPFLAGS=\
+	-include openbsd.h\
+	-I.\
+	${CPPFLAGS}\
+
+<$root/src/mkcmd
