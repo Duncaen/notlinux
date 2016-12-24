@@ -1,5 +1,9 @@
-all:V: o.nq o.fq
+TARG=\
+	nq
 
-o.%: %.c
+<$root/src/mkcmd
 
-<$root/src/mkcommon
+TARG=\
+	fq
+
+<$root/src/mkcmd
