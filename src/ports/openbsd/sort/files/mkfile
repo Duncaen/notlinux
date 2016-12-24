@@ -1,0 +1,30 @@
+LIB=\
+	$root/$objtype/lib/libopenbsd.a\
+
+TARG=\
+	sort\
+
+OFILES=\
+	${TARG}.o\
+	bwstring.$O\
+	coll.$O\
+	file.$O\
+	mem.$O\
+	radixsort.$O\
+	vsort.$O\
+
+HFILES=\
+	bwstring.h\
+	coll.h\
+	file.h\
+	mem.h\
+	radixsort.h\
+	sort.h\
+	vsort.h\
+
+
+CPPFLAGS=\
+	-include openbsd.h\
+	${CPPFLAGS}\
+
+<$root/src/mkcmd

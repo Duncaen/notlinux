@@ -1,0 +1,101 @@
+--- file.c
++++ file.c
+@@ -30,7 +30,7 @@
+ #include <sys/mman.h>
+ #include <sys/stat.h>
+ #include <sys/types.h>
+-#include <sys/queue.h>
++#include <openbsd-queue.h>
+ 
+ #include <err.h>
+ #include <fcntl.h>
+--- sort.c
++++ sort.c
+@@ -29,7 +29,9 @@
+ 
+ #include <sys/resource.h>
+ #include <sys/stat.h>
++#if 0
+ #include <sys/sysctl.h>
++#endif
+ #include <sys/types.h>
+ 
+ #include <err.h>
+@@ -210,12 +212,17 @@
+ 	long long user_memory;
+ 	struct rlimit rl;
+ 	size_t len;
++#if 0
+ 	int mib[] = { CTL_HW, HW_USERMEM64 };
+ 
+ 	/* Get total user (non-kernel) memory. */
+ 	len = sizeof(user_memory);
+ 	if (sysctl(mib, 2, &user_memory, &len, NULL, 0) == -1)
+ 	    user_memory = -1;
++#else
++	/* XXX: PORT: do a real check */
++	user_memory = (1 << 23);
++#endif
+ 
+ 	/* Increase our data size to the max */
+ 	if (getrlimit(RLIMIT_DATA, &rl) == 0) {
+@@ -395,7 +402,7 @@
+  * Signal handler that clears the temporary files.
+  */
+ static void
+-sig_handler(int sig __unused)
++sig_handler(int sig __UNUSED)
+ {
+ 	clear_tmp_files();
+ 	_exit(2);
+--- test.c
++++ test.c
+@@ -0,0 +1 @@
++#include <md5.h>
+--- coll.c
++++ coll.c
+@@ -782,7 +782,7 @@
+  */
+ static int
+ numcoll_impl(struct key_value *kv1, struct key_value *kv2,
+-    size_t offset __unused, bool use_suffix)
++    size_t offset __UNUSED, bool use_suffix)
+ {
+ 	struct bwstring *s1, *s2;
+ 	wchar_t sfrac1[MAX_NUM_SIZE + 1], sfrac2[MAX_NUM_SIZE + 1];
+@@ -955,7 +955,7 @@
+  */
+ static int
+ randomcoll(struct key_value *kv1, struct key_value *kv2,
+-    size_t offset __unused)
++    size_t offset __UNUSED)
+ {
+ 	struct bwstring *s1, *s2;
+ 	MD5_CTX ctx1, ctx2;
+@@ -1008,7 +1008,7 @@
+  */
+ static int
+ versioncoll(struct key_value *kv1, struct key_value *kv2,
+-    size_t offset __unused)
++    size_t offset __UNUSED)
+ {
+ 	struct bwstring *s1, *s2;
+ 
+@@ -1081,7 +1081,7 @@
+  */
+ static int
+ gnumcoll(struct key_value *kv1, struct key_value *kv2,
+-    size_t offset __unused)
++    size_t offset __UNUSED)
+ {
+ 	double d1, d2;
+ 	int err1, err2;
+@@ -1237,7 +1237,7 @@
+  * Implements month sort (-M).
+  */
+ static int
+-monthcoll(struct key_value *kv1, struct key_value *kv2, size_t offset __unused)
++monthcoll(struct key_value *kv1, struct key_value *kv2, size_t offset __UNUSED)
+ {
+ 	int val1, val2;
+ 	bool key1_read, key2_read;
