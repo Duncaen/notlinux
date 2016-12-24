@@ -1,0 +1,15 @@
+LIB=\
+	$root/$objtype/lib/libopenbsd.a\
+
+TARG=\
+	uname\
+
+OFILES=\
+	${TARG}.o\
+
+CPPFLAGS=\
+	-include openbsd.h\
+	'-DMACHINE_ARCH='\"$objtype\"\
+	${CPPFLAGS}\
+
+<$root/src/mkcmd
