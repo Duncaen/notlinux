@@ -1,7 +1,9 @@
 LIBS=libopenbsd
 
-TARG=\
-	uudecode\
+TARG=uudecode
+
+LINKS=\
+	b64decode\
 
 OFILES=\
 	${TARG}.o\

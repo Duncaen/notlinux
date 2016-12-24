@@ -1,7 +1,10 @@
 LIBS=libopenbsd
 
-TARG=\
-	chmod\
+TARG=chmod
+
+LINKS=\
+	chgrp\
+	chown\
 
 OFILES=\
 	${TARG}.o\

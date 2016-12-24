@@ -1,7 +1,9 @@
 LIBS=libopenbsd
 
-TARG=\
-	test\
+TARG=test
+
+LINKS=\
+	[\
 
 OFILES=\
 	${TARG}.o\

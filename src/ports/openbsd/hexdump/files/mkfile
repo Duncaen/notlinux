@@ -1,7 +1,9 @@
 LIBS=libopenbsd
 
-TARG=\
-	hexdump\
+TARG=hexdump
+
+LINKS=\
+	od\
 
 OFILES=\
 	${TARG}.o\

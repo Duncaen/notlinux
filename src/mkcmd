@@ -14,6 +14,14 @@ $O.$TARG: $OFILES $LIB
 
 install:V: $TARG.install
 
+%.install:V: $BINDIR/%
+
+$BINDIR/%: $O.%
+	$INSTALL $prereq $target
+	for l in ${LINKS}; do
+		ln -sf $stem $BINDIR/$l
+	done
+
 CLEANFILES=$CLEANFILES $TARG
 NUKEFILES=$NUKEFILES $BIN/$TARG
 

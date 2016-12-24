@@ -1,7 +1,10 @@
 LIBS=libopenbsd
 
 TARG=\
-	uuencode\
+	uuencode
+
+LINKS=\
+	b64encode\
 
 OFILES=\
 	${TARG}.o\

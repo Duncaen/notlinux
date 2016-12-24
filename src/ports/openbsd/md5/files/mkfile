@@ -1,7 +1,13 @@
 LIBS=libopenbsd
 
 TARG=\
-	md5\
+	md5
+
+LINKS=\
+	sha1\
+	sha256\
+	sha512\
+	cksum\
 
 OFILES=\
 	${TARG}.$O\

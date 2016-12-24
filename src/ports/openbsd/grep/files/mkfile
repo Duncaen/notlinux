@@ -1,7 +1,13 @@
 LIBS=libopenbsd libz
 
-TARG=\
-	grep\
+TARG=grep
+
+LINKS=\
+	egrep\
+	fgrep\
+	zgrep\
+	zegrep\
+	zfgrep\
 
 OFILES=\
 	${TARG}.o\

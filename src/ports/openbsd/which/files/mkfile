@@ -3,6 +3,9 @@ LIBS=libopenbsd
 TARG=\
 	which\
 
+LINKS=\
+	whereis\
+
 OFILES=\
 	${TARG}.o\
 
