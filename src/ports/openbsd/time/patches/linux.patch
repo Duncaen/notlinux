@@ -1,0 +1,29 @@
+--- time.c
++++ time.c
+@@ -33,7 +33,9 @@
+ #include <sys/time.h>
+ #include <sys/resource.h>
+ #include <sys/wait.h>
++#if 0
+ #include <sys/sysctl.h>
++#endif
+ 
+ #include <err.h>
+ #include <errno.h>
+@@ -121,6 +123,8 @@
+ 			(long long)ru.ru_stime.tv_sec, ru.ru_stime.tv_usec/10000);
+ 	}
+ 
++#if 0
++	/* XXX: PORT: add alternative ? */
+ 	if (lflag) {
+ 		int hz;
+ 		long ticks;
+@@ -168,6 +172,7 @@
+ 		fprintf(stderr, "%10ld  %s\n",
+ 			ru.ru_nivcsw, "involuntary context switches");
+ 	}
++#endif
+ 
+ 	if (exitonsig) {
+ 		if (signal(exitonsig, SIG_DFL) == SIG_ERR)
