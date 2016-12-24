@@ -1,0 +1,43 @@
+--- chmod.c
++++ chmod.c
+@@ -74,7 +74,9 @@
+ 		ischown = __progname[2] == 'o';
+ 		ischgrp = __progname[2] == 'g';
+ 		ischmod = __progname[2] == 'm';
++#if 0
+ 		ischflags = __progname[2] == 'f';
++#endif
+ 	}
+ 
+ 	uid = (uid_t)-1;
+@@ -152,6 +154,7 @@
+ 	} else if (!hflag)
+ 		atflags = 0;
+ 
++#if 0
+ 	if (ischflags) {
+ 		if (pledge("stdio rpath fattr", NULL) == -1)
+ 			err(1, "pledge");
+@@ -175,6 +178,9 @@
+ 			oct = 0;
+ 		}
+ 	} else if (ischmod) {
++#else
++	if (ischmod) {
++#endif
+ 		mode = *argv;
+ 		if (*mode >= '0' && *mode <= '7') {
+ 			errno = 0;
+@@ -268,10 +274,12 @@
+ 			if (!fchownat(AT_FDCWD, p->fts_accpath, uid, gid,
+ 			    atflags) || fflag)
+ 				continue;
++#if 0
+ 		} else {
+ 			if (!chflagsat(AT_FDCWD, p->fts_accpath, oct ? fset :
+ 			    (p->fts_statp->st_flags | fset) & fclear, atflags))
+ 				continue;
++#endif
+ 		}
+ 
+ 		/* error case */
