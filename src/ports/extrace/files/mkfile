@@ -1,5 +1,9 @@
-all:V: o.extrace o.pwait
+TARG=\
+	extrace
 
-o.%: %.c
+<$root/src/mkcmd
 
-<$root/src/mkcommon
+TARG=\
+	pwait
+
+<$root/src/mkcmd
