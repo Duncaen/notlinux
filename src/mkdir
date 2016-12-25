@@ -1,0 +1,18 @@
+all:V: ${DIRS:=all-%}
+install:V: ${DIRS:=install-%}
+clean:V: ${DIRS:=clean-%}
+nuke:V: ${DIRS:=nuke-%}
+
+all-%:V:
+	cd $stem && mk $MKFLAGS
+
+install-%:V:
+	cd $stem && mk $MKFLAGS install
+
+clean-%:V:
+	cd $stem && mk $MKFLAGS clean
+
+nuke-%:V:
+	cd $stem && mk $MKFLAGS nuke
+
+<|for d in ${DIRS}; do printf \'%s:V: all-%s\\\n\' "$d" "$d"; done

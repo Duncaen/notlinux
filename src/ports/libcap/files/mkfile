@@ -1,5 +1,5 @@
 DIRS=\
-	lib\
-	cmd\
+	libcap\
+	progs\
 
 <$root/src/mkdir
