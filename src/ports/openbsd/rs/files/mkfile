@@ -1,0 +1,10 @@
+LIBS=libopenbsd
+
+TARG=\
+	rs\
+
+OFILES=\
+	${TARG}.$O\
+	utf8.$O\
+
+<$root/src/mkcmd
