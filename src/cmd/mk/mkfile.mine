@@ -1,0 +1,42 @@
+root=../../..
+<$root/src/cmd/mkhdr
+
+TARG=\
+	mk\
+
+OFILES=\
+	${TARG}.$O\
+	arc.o\
+	archive.o\
+	bufblock.o\
+	env.o\
+	file.o\
+	graph.o\
+	job.o\
+	lex.o\
+	main.o\
+	match.o\
+	parse.o\
+	recipe.o\
+	rc.o\
+	rule.o\
+	run.o\
+	sh.o\
+	shell.o\
+	shprint.o\
+	symtab.o\
+	var.o\
+	varsub.o\
+	word.o\
+	unix.o\
+
+LIB=\
+	$root/$objtype/lib/lib9.a\
+
+HFILES=\
+	fns.h\
+	mk.h\
+	sys.h\
+	sys.std.h\
+
+<$root/src/cmd/mkone
