@@ -1,6 +1,14 @@
---- du.c
+--- du.c.orig
 +++ du.c
-@@ -44,9 +44,8 @@
+@@ -35,6 +35,7 @@
+ 
+ #include <sys/types.h>
+ #include <sys/stat.h>
++#include <sys/param.h>
+ 
+ #include <dirent.h>
+ #include <err.h>
+@@ -44,9 +45,8 @@
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
@@ -11,3 +19,12 @@
  
  
  int	 linkchk(FTSENT *);
+@@ -237,7 +237,7 @@
+ 
+ RB_HEAD(ltree, links_entry) links = RB_INITIALIZER(&links);
+ 
+-RB_GENERATE_STATIC(ltree, links_entry, entry, links_cmp);
++RB_GENERATE_STATIC(ltree, links_entry, entry, links_cmp)
+ 
+ 
+ int
