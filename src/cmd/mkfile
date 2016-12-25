@@ -12,6 +12,9 @@ OFILES=${TARG}.$O
 
 TARG=halt
 OFILES=${TARG}.$O
+LINKS=\
+	reboot\
+	poweroff\
 
 <$root/src/mkcmd
 
