@@ -43,7 +43,7 @@ LDFLAGS=\
 	${LDFLAGS_DEBUG}\
 	${LDFLAGS_HARDEN}\
 	${LDFLAGS_OPTIMIZE}\
-	-L $root/$objtype/lib\
+	-L$root/$objtype/lib\
 
 AFLAGS  =
 YFLAGS  =-d
