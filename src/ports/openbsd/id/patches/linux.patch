@@ -1,0 +1,37 @@
+--- id.c.orig
++++ id.c
+@@ -38,7 +38,6 @@
+ #include <string.h>
+ #include <unistd.h>
+ #include <limits.h>
+-#include <login_cap.h>
+ 
+ void	current(void);
+ void	pretty(struct passwd *);
+@@ -124,6 +123,7 @@
+ 
+ 	pw = *argv ? who(*argv) : NULL;
+ 
++#if 0
+ 	if (cflag) {
+ 		if (pw == NULL)
+ 			pw = getpwuid(getuid());
+@@ -133,6 +133,7 @@
+ 			(void)printf("%s\n", LOGIN_DEFCLASS);
+ 		exit(0);
+ 	}
++#endif
+ 
+ 	if (gflag) {
+ 		gid = pw ? pw->pw_gid : rflag ? getgid() : getegid();
+@@ -207,8 +208,10 @@
+ 		(void)printf("groups\t");
+ 		group(NULL, 1);
+ 	}
++#if 0
+ 	if (pw != NULL && pw->pw_class != NULL && *pw->pw_class != '\0')
+ 		(void)printf("class\t%s\n", pw->pw_class);
++#endif
+ }
+ 
+ void
