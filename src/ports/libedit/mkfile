@@ -1,0 +1,17 @@
+pkg=libedit
+ver=20160903-3.1
+
+url=http://thrysoee.dk/editline/libedit-${ver}.tar.gz
+
+<$root/src/mkport
+
+cfg=\
+	'--includedir='$INCDIR\
+	'--bindir='$BINDIR\
+	'--libdir='$LIBDIR\
+
+make_install_args=\
+	'INSTALL='install\
+
+post-install:V:
+	install src/$wrk/libedit.mk ${DESTDIR}${LIBDIR}/libedit.mk
