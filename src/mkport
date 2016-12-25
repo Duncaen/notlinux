@@ -106,8 +106,8 @@ do-install:QV:
 	esac
 
 do-clean:QV:
-	cd "src/${wrk}"
+	cd "src/${wrk}" && \
 	case "${build_style:-make}" in
 	make) make $make_clean_args ${make_clean_target:-clean} ;;
 	mk) mk $MKFLAGS $make_clean_args ${make_clean_target:-clean} ;;
-	esac
+	esac || true

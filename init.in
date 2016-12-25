@@ -1,0 +1,6 @@
+#!/%%OBJTYPE%%/bin/rc
+
+for (d in bin lib)
+	ln -sf /%%OBJTYPE%%/$d .
+
+exec /bin/init
