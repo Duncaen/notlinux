@@ -33,16 +33,16 @@ distfile=`fname=${url##*>}; [ "$url" = "$fname" ] && fname=${fname##*/}; printf 
 src/.done-$pkg-$ver: src/.fetch-$pkg-$ver src/.config-$pkg-$ver src/.build-$pkg-$ver src/.install-$pkg-$ver
 	touch $target
 
-src/.fetch-$pkg-$ver:Q: do-fetch post-fetch
+src/.fetch-$pkg-$ver:Q: pre-fetch do-fetch post-fetch
 	touch $target
 
-src/.config-$pkg-$ver:Q: do-config
+src/.config-$pkg-$ver:Q: pre-config do-config post-config
 	touch $target
 
-src/.build-$pkg-$ver:Q: do-build
+src/.build-$pkg-$ver:Q: pre-build do-build post-build
 	touch $target
 
-src/.install-$pkg-$ver:Q: do-install
+src/.install-$pkg-$ver:Q: pre-install do-install post-install
 	touch $target
 
 fetch:V: src/.fetch-$pkg-$ver
@@ -89,7 +89,7 @@ do-fetch:QV:
 
 do-config:QV:
 	cd "src/${wrk}"
-	[ ! -e ./configure ] || ./configure --prefix=/usr $cfg
+	[ ! -e ./configure ] || CFLAGS=$CFLAGS LDFLAGS=$LDFLAGS ./configure --prefix=/usr $cfg
 
 do-build:QV:
 	cd "src/${wrk}"
