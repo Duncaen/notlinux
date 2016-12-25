@@ -16,6 +16,9 @@ $O.% $O.out:
 y.tab.h y.tab.c: $YFILES
 	$YACC $YFLAGS $prereq
 
+lex.yy.c: $LFILES
+	$LEX $LFLAGS $prereq
+
 install:V:
 
 nuke:V: nuke-common
