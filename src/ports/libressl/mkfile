@@ -3,3 +3,18 @@ ver=2.4.4
 url=https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-${ver}.tar.gz
 
 <$root/src/mkport
+
+# pre-config:V:
+# 	cd "src/$wrk"
+# 	autoreconf -fi
+
+cfg=\
+	'--includedir='$INCDIR\
+	'--bindir='$BINDIR\
+	'--libdir='$LIBDIR\
+
+make_install_args=\
+	'INSTALL='install\
+
+post-install:V:
+	install src/$wrk/libcrypto.mk ${DESTDIR}${LIBDIR}/libcrypto.mk
