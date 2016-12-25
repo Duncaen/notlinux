@@ -3,12 +3,11 @@ ver=0.1.1
 
 url=https://github.com/sabotage-linux/netbsd-curses/archive/v${ver}.tar.gz
 
-make_install_target=install-static
 
 <$root/src/mkport
 
-do-install:QV:
-	make -C "src/${wrk}" \
-		DESTDIR=$root \
-		PREFIX=/$objtype \
-		install-static
+make_install_target=install-static
+make_install_args=\
+	'INCDIR='$INCDIR\
+	'BINDIR='$BINDIR\
+	'LIBDIR='$LIBDIR\
