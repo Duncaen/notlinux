@@ -1,0 +1,9 @@
+LIBS=libopenbsd
+
+TARG=\
+	jot\
+
+OFILES=\
+	${TARG}.o\
+
+<$root/src/mkcmd
