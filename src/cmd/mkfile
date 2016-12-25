@@ -1,0 +1,22 @@
+<$root/src/mkconf
+
+TARG=klogcat
+OFILES=${TARG}.$O
+
+<$root/src/mkcmd
+
+TARG=syslogcat
+OFILES=${TARG}.$O
+
+<$root/src/mkcmd
+
+TARG=halt
+OFILES=${TARG}.$O
+
+<$root/src/mkcmd
+
+DIRS=\
+	mk\
+	rc\
+
+<$root/src/mkdir
