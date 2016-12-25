@@ -1,0 +1,9 @@
+pkg=neatvi
+ver=0.20161225
+
+git=git://repo.or.cz/neatvi.git
+git_rev=master
+
+build_style=mk
+
+<$root/src/mkport

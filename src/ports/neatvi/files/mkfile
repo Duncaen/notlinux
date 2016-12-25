@@ -1,0 +1,22 @@
+TARG=\
+	vi
+
+OFILES=\
+	vi.$O\
+	ex.$O\
+	lbuf.$O\
+	mot.$O\
+	sbuf.$O\
+	ren.$O\
+	dir.$O\
+	syn.$O\
+	reg.$O\
+	led.$O\
+	uc.$O\
+	term.$O\
+	rset.$O\
+	regex.$O\
+	cmd.$O\
+	conf.$O\
+
+<$root/src/mkcmd
