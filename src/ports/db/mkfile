@@ -1,0 +1,28 @@
+pkg=db
+ver=6.1.19
+
+url=http://download.oracle.com/berkeley-db/db-${ver}.tar.gz
+
+cfg=\
+	--enable-compat185\
+
+<$root/src/mkport
+
+do-config:V:
+	cd "src/${wrk}/build_unix"
+	../dist/configure \
+		'--includedir='$INCDIR \
+		'--bindir='$BINDIR \
+		'--libdir='$LIBDIR \
+		-enable-compat185 \
+
+do-build:V:
+	cd "src/${wrk}/build_unix"
+	make
+
+do-install:V:
+	cd "src/${wrk}/build_unix"
+	make install
+
+post-install:V:
+	install src/$wrk/libdb.mk ${DESTDIR}${LIBDIR}/libdb.mk

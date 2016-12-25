@@ -1,0 +1,1 @@
+LDFLAGS_libdb=-ldb
