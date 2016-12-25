@@ -1,0 +1,1 @@
+LDFLAGS_libterminfo=-lterminfo

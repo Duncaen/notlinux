@@ -3,7 +3,6 @@ ver=0.1.1
 
 url=https://github.com/sabotage-linux/netbsd-curses/archive/v${ver}.tar.gz
 
-
 <$root/src/mkport
 
 make_install_target=install-static
@@ -11,3 +10,7 @@ make_install_args=\
 	'INCDIR='$INCDIR\
 	'BINDIR='$BINDIR\
 	'LIBDIR='$LIBDIR\
+
+post-install:V:
+	install src/$wrk/libncurses.mk ${DESTDIR}${LIBDIR}/libncurses.mk
+	install src/$wrk/libterminfo.mk ${DESTDIR}${LIBDIR}/libterminfo.mk
