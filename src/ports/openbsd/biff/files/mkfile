@@ -1,0 +1,9 @@
+LIBS=libopenbsd
+
+TARG=\
+	biff\
+
+OFILES=\
+	${TARG}.o\
+
+<$root/src/mkcmd
