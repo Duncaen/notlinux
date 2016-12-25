@@ -1,0 +1,10 @@
+LIBS=libopenbsd
+
+TARG=\
+	vis\
+
+OFILES=\
+	${TARG}.$O\
+	foldit.$O\
+
+<$root/src/mkcmd
