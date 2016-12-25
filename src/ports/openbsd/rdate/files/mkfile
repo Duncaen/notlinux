@@ -1,0 +1,16 @@
+LIBS=libopenbsd
+
+TARG=\
+	rdate\
+
+OFILES=\
+	${TARG}.$O\
+	 rfc868time.$O\
+	 ntp.$O\
+	 ntpleaps.$O\
+	
+CPPFLAGS=\
+	${CPPFLAGS}\
+	-DNO_UTIL\
+
+<$root/src/mkcmd
