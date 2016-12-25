@@ -25,6 +25,12 @@
 #define MAKE_CLONE(new, old) \
 	extern __typeof(old) new __attribute__((weak, alias(#old)))
 
+#ifndef SA_LEN
+#define SA_LEN(X) \
+	(((struct sockaddr*)(X))->sa_family == AF_INET ? sizeof(struct sockaddr_in) : \
+	 ((struct sockaddr*)(X))->sa_family == AF_INET6 ? sizeof(struct sockaddr_in6) : sizeof(struct sockaddr))
+#endif
+
 #define	_PW_BUF_LEN	1024
 #define	_GR_BUF_LEN	1024
 
