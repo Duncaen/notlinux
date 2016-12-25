@@ -1,0 +1,9 @@
+LIBS=libopenbsd
+
+TARG=\
+	apply\
+
+OFILES=\
+	${TARG}.o\
+
+<$root/src/mkcmd
