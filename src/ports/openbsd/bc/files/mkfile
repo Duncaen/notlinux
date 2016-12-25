@@ -1,0 +1,40 @@
+LIBS=\
+	libopenbsd\
+	libedit\
+	libcrypto\
+
+TARG=\
+	bc\
+
+OFILES=\
+	cp.dc.$O\
+	cp.bcode.$O\
+	cp.inout.$O\
+	cp.mem.$O\
+	cp.stack.$O\
+	tty.$O\
+	scan.$O\
+	y.tab.$O\
+
+HFILES=\
+	y.yab.h\
+
+LFILES=\
+	scan.l\
+
+YFILES=\
+	${TARG}.y\
+
+<$root/src/mkcmd
+
+scan.$O: y.tab.h
+
+$root/src/ports/openbsd/dc/src/dc-6.0/cp.%.$O:
+	cd $root/src/ports/openbsd/dc/src/dc-6.0
+	mk $MKFLAGS $stem.$O
+
+cp.%.$O: $root/src/ports/openbsd/dc/src/dc-6.0/cp.%.$O
+	cp $root/src/ports/openbsd/dc/src/dc-6.0/$stem.o cp.$stem.o
+
+scan.c: lex.yy.c
+	cmp -s $target $prereq || cp $prereq $target
