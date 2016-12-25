@@ -10,8 +10,11 @@
 	HOSTCC=$HOSTCC \
 	HOSTLD=$HOSTLD \
 	DESTDIR=$root \
+	PREFIX=\
 	BINDIR=$objtype/bin \
+	bindir=$BINDIR \
 	LIBDIR=$objtype/lib \
+	libdir=$LIBDIR \
 	INCDIR=$objtype/src/include \
 `
 

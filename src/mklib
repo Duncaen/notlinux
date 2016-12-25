@@ -15,12 +15,12 @@ ${LIB:=%.a}:V: $OFILES
 
 install:V: install-lib
 
-install-lib:V: ${LIB:=$LIBDIR/%.a} ${LIB:=$LIBDIR/%.mk}
+install-lib:V: ${LIB:=$DESTDIR$LIBDIR/%.a} ${LIB:=$DESTDIR$LIBDIR/%.mk}
 
-${LIBDIR}/%.a: %.a
+${DESTDIR}${LIBDIR}/%.a: %.a
 	install $prereq $target
 
-${LIBDIR}/%.mk: %.mk
+${DESTDIR}${LIBDIR}/%.mk: %.mk
 	install $prereq $target
 
 NUKEFILES=$NUKEFILES $LIB ${LIB:.a=.mk}

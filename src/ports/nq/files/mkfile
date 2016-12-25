@@ -1,9 +1,7 @@
-TARG=\
-	nq
-
+TARG=nq
+OFILES=${TARG}.$O
 <$root/src/mkcmd
 
-TARG=\
-	fq
-
+TARG=fq
+OFILES=${TARG}.$O
 <$root/src/mkcmd

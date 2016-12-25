@@ -1,7 +1,31 @@
-all:V: o.contain o.inject o.pseudo
+TARG=\
+	contain
 
-o.contain: contain.o console.o map.o mount.o util.o
-o.inject: inject.o map.o util.o
-o.pseudo: pseudo.o map.o util.o
+OFILES=\
+	${TARG}.$O\
+	console.$O\
+	map.$O\
+	mount.$O\
+	util.$O\
 
-<$root/src/mkcommon
+<$root/src/mkcmd
+
+TARG=\
+	inject
+
+OFILES=\
+	${TARG}.$O\
+	map.$O\
+	util.$O\
+
+<$root/src/mkcmd
+
+TARG=\
+	pseudo
+
+OFILES=\
+	${TARG}.$O\
+	map.$O\
+	util.$O\
+
+<$root/src/mkcmd

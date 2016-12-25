@@ -6,4 +6,4 @@ all:QV:
 <$root/src/mkcommon
 
 install:V:
-	$INSTALL shar.sh $BINDIR/shar
+	$INSTALL shar.sh ${DESTDIR}${BINDIR}/shar

@@ -1,5 +1,5 @@
 $O.% $O.out:
-	$LD -o $target ${prereq:-$stem.o} $LDFLAGS
+	$LD ${prereq} -o $target $LDFLAGS
 
 # don't combine with following %.$O rules
 %.$O: $HFILES

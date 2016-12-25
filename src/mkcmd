@@ -6,24 +6,24 @@ CFLAGS_LIBS = `for l in $LIBS; do printf '${CFLAGS_%s} ' "$l"; done`
 CPPFLAGS_LIBS = `for l in $LIBS; do printf '${CPPFLAGS_%s} ' "$l"; done`
 LDFLAGS_LIBS = `for l in $LIBS; do printf '${LDFLAGS_%s} ' "$l"; done`
 
-all:V: $O.$TARG
+all:V: $O.${TARG}
 
-${TARG}:V: $O.$TARG
+${TARG}:V: $O.${TARG}
 
-$O.$TARG: $OFILES $LIB
+$O.${TARG}: $OFILES $LIB
 
-install:V: $TARG.install
+install:V: ${TARG}.install
 
-%.install:V: $BINDIR/%
+%.install:V: ${DESTDIR}${BINDIR}/%
 
-$BINDIR/%: $O.%
+${DESTDIR}${BINDIR}/%:V: $O.%
 	$INSTALL $prereq $target
 	for l in ${LINKS}; do
-		ln -sf $stem $BINDIR/$l
+		ln -sf $stem $DESTDIR$BINDIR/$l
 	done
 
-CLEANFILES=$CLEANFILES $TARG
-NUKEFILES=$NUKEFILES $BIN/$TARG
+CLEANFILES=$CLEANFILES $O.${TARG}
+NUKEFILES=$NUKEFILES ${DESTDIR}${BINDIR}/${TARG}
 
 <$root/src/mkcommon
 
