@@ -1,0 +1,5 @@
+ . ./rcmain.unix
+#path=(. /bin /usr/bin /usr/local/bin)
+#if (~ $#home 0) home=$HOME
+#. -i /dev/fd/0
+#exit ''

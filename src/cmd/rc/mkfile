@@ -1,0 +1,44 @@
+TARG=rc
+
+LIBS=\
+	lib9n\
+
+OFILES=\
+	code.$O\
+	exec.$O\
+	getflags.$O\
+	glob.$O\
+	here.$O\
+	io.$O\
+	lex.$O\
+	linenoise.$O\
+	pcmd.$O\
+	pfnc.$O\
+	simple.$O\
+	subr.$O\
+	trap.$O\
+	tree.$O\
+	var.$O\
+	unix.$O\
+	havefork.$O\
+	y.tab.$O\
+
+HFILES=\
+	rc.h\
+	x.tab.h\
+	exec.h\
+	fns.h\
+	getflags.h\
+	io.h\
+
+YFILES=\
+	syn.y\
+
+CPPFLAGS=\
+	-include lib9.h\
+	-DUnix\
+
+<$root/src/mkcmd
+
+x.tab.h: y.tab.h
+	cmp -s $target $prereq || cp $prereq $target

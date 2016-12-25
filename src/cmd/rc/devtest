@@ -1,0 +1,8 @@
+#!/usr/bin/env rc
+
+switch ($1) {
+	case foo
+		echo hi
+	case *
+		echo bye
+}
