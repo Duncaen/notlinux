@@ -83,8 +83,8 @@ do-fetch:QV:
 	)
 	[ ! -d ./files ] || cp -r ./files/* "src/${wrk}/"
 	[ ! -d ./patches ] || for p in ./patches/*; do
-		patch --dry-run -d "src/${wrk}" -Np0 <"$p" 2>/dev/null \
-			&& patch -d "src/${wrk}" -Np0 <"$p" || true
+		patch --dry-run -d "src/${wrk}" -Np0 <"$p" \
+			&& patch -b -d "src/${wrk}" -Np0 <"$p" || true
 	done
 
 do-config:QV:
