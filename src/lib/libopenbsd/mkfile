@@ -31,6 +31,7 @@ OFILES=\
 	readpassphrase.$O\
 	reallocarray.$O\
 	setmode.$O\
+	setproctitle.$O\
 	strlcat.$O\
 	strlcpy.$O\
 	strtoimax.$O\
@@ -39,6 +40,8 @@ OFILES=\
 	strtoumax.$O\
 	verrc.$O\
 	vwarnc.$O\
+	vis.$O\
+	unvis.$O\
 	pwcache.$O\
 	getbsize.$O\
 	fmt_scaled.$O\
