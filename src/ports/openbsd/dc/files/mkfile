@@ -1,0 +1,16 @@
+LIBS=\
+	libopenbsd\
+	libcrypto\
+
+TARG=\
+	dc\
+
+OFILES=\
+	${TARG}.$O\
+	main.$O\
+	bcode.$O\
+	inout.$O\
+	mem.$O\
+	stack.$O\
+
+<$root/src/mkcmd
