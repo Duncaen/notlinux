@@ -7,8 +7,6 @@
 
 #define FAIL_INSTEAD_OF_TRYING_FALLBACK
 
-#define howmany(x, y)	(((x) + ((y) - 1)) / (y))
-
 /* XXX: x86_64 only, see sys/arch/$arch/include/_types.h */
 #define ALIGNBYTES		(sizeof(long) - 1)
 #define ALIGN(p) (((u_int)(p) + ALIGNBYTES) &~ ALIGNBYTES)
@@ -29,7 +27,8 @@
 
 #define	_PW_BUF_LEN	1024
 #define	_GR_BUF_LEN	1024
-#define	MAXNAMLEN PATH_MAX
+
+#define NOFILE_MAX	NOFILE
 
 /* sys/sys/param.h */
 /*
@@ -158,3 +157,6 @@ void *setmode(const char *);
 uint32_t arc4random(void);
 void arc4random_buf(void *, size_t);
 uint32_t arc4random_uniform(uint32_t);
+
+/* setproctitle.c */
+void setproctitle(const char *, ...);
