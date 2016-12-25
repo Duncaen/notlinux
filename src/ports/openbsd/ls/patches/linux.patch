@@ -1,5 +1,5 @@
---- ./cmp.c
-+++ ./cmp.c
+--- cmp.c.orig
++++ cmp.c
 @@ -61,10 +61,12 @@
  		return (1);
  	else if (b->fts_statp->st_mtime < a->fts_statp->st_mtime)
@@ -78,84 +78,17 @@
  	else
  		return (revnamecmp(a, b));
  }
---- ./ls.c
-+++ ./ls.c
-@@ -49,7 +49,6 @@
- #include <unistd.h>
- #include <limits.h>
- #include <locale.h>
--#include <util.h>
+--- print.c.orig
++++ print.c
+@@ -35,6 +35,7 @@
  
- #include "ls.h"
- #include "extern.h"
-@@ -73,7 +73,9 @@
- int f_accesstime;		/* use time of last access */
- int f_column;			/* columnated format */
- int f_columnacross;		/* columnated format, sorted across */
-+#if 0
- int f_flags;			/* show flags associated with a file */
-+#endif
- int f_grouponly;		/* long listing format without owner */
- int f_humanval;			/* show human-readable file sizes */
- int f_inode;			/* print inode */
-@@ -220,9 +222,11 @@
- 			blocksize = 1024;
- 			kflag = 1;
- 			break;
-+#if 0
- 		case 'o':
- 			f_flags = 1;
- 			break;
-+#endif
- 		case 'p':
- 			f_typedir = 1;
- 			break;
-@@ -432,7 +436,9 @@
- 	int width;
- 	char *user, *group, buf[21];	/* 64 bits == 20 digits */
- 	char nuser[12], ngroup[12];
-+#if 0
- 	char *flags = NULL;
-+#endif
+ #include <sys/types.h>
+ #include <sys/stat.h>
++#include <sys/param.h>
  
- 	/*
- 	 * If list is NULL there are two possibilities: that the parent
-@@ -504,6 +510,7 @@
- 					maxuser = ulen;
- 				if ((glen = strlen(group)) > maxgroup)
- 					maxgroup = glen;
-+#if 0
- 				if (f_flags) {
- 					flags = fflagstostr(sp->st_flags);
- 					if (*flags == '\0')
-@@ -512,6 +519,9 @@
- 						maxflags = flen;
- 				} else
- 					flen = 0;
-+#else
-+				flen = 0;
-+#endif
- 
- 				if ((np = malloc(sizeof(NAMES) +
- 				    ulen + 1 + glen + 1 + flen + 1)) == NULL)
-@@ -526,12 +536,14 @@
- 				    S_ISBLK(sp->st_mode))
- 					bcfile = 1;
- 
-+#if 0
- 				if (f_flags) {
- 					np->flags = &np->data[ulen + 1 + glen + 1];
- 				  	(void)strlcpy(np->flags, flags, flen + 1);
- 					if (*flags != '-')
- 						free(flags);
- 				}
-+#endif
- 				cur->fts_pointer = np;
- 			}
- 		}
---- ./print.c
-+++ ./print.c
-@@ -47,7 +47,6 @@
+ #include <err.h>
+ #include <errno.h>
+@@ -47,7 +48,6 @@
  #include <time.h>
  #include <unistd.h>
  #include <limits.h>
@@ -174,3 +107,78 @@
  		if (S_ISCHR(sp->st_mode) || S_ISBLK(sp->st_mode))
  			(void)printf("%3d, %3d ",
  			    major(sp->st_rdev), minor(sp->st_rdev));
+--- ls.c.orig
++++ ls.c
+@@ -49,7 +49,6 @@
+ #include <unistd.h>
+ #include <limits.h>
+ #include <locale.h>
+-#include <util.h>
+ 
+ #include "ls.h"
+ #include "extern.h"
+@@ -73,7 +72,9 @@
+ int f_accesstime;		/* use time of last access */
+ int f_column;			/* columnated format */
+ int f_columnacross;		/* columnated format, sorted across */
++#if 0
+ int f_flags;			/* show flags associated with a file */
++#endif
+ int f_grouponly;		/* long listing format without owner */
+ int f_humanval;			/* show human-readable file sizes */
+ int f_inode;			/* print inode */
+@@ -220,9 +221,11 @@
+ 			blocksize = 1024;
+ 			kflag = 1;
+ 			break;
++#if 0
+ 		case 'o':
+ 			f_flags = 1;
+ 			break;
++#endif
+ 		case 'p':
+ 			f_typedir = 1;
+ 			break;
+@@ -432,7 +435,9 @@
+ 	int width;
+ 	char *user, *group, buf[21];	/* 64 bits == 20 digits */
+ 	char nuser[12], ngroup[12];
++#if 0
+ 	char *flags = NULL;
++#endif
+ 
+ 	/*
+ 	 * If list is NULL there are two possibilities: that the parent
+@@ -504,6 +509,7 @@
+ 					maxuser = ulen;
+ 				if ((glen = strlen(group)) > maxgroup)
+ 					maxgroup = glen;
++#if 0
+ 				if (f_flags) {
+ 					flags = fflagstostr(sp->st_flags);
+ 					if (*flags == '\0')
+@@ -512,6 +518,9 @@
+ 						maxflags = flen;
+ 				} else
+ 					flen = 0;
++#else
++				flen = 0;
++#endif
+ 
+ 				if ((np = malloc(sizeof(NAMES) +
+ 				    ulen + 1 + glen + 1 + flen + 1)) == NULL)
+@@ -526,12 +535,14 @@
+ 				    S_ISBLK(sp->st_mode))
+ 					bcfile = 1;
+ 
++#if 0
+ 				if (f_flags) {
+ 					np->flags = &np->data[ulen + 1 + glen + 1];
+ 				  	(void)strlcpy(np->flags, flags, flen + 1);
+ 					if (*flags != '-')
+ 						free(flags);
+ 				}
++#endif
+ 				cur->fts_pointer = np;
+ 			}
+ 		}
