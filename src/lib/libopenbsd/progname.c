@@ -34,24 +34,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-#ifdef HAVE___PROGNAME
 extern const char *__progname;
-#else
-static const char *__progname = NULL;
-#endif
 
 const char *
 getprogname(void)
 {
-#if defined(HAVE_PROGRAM_INVOCATION_SHORT_NAME)
-	if (__progname == NULL)
-		__progname = program_invocation_short_name;
-#elif defined(HAVE_GETEXECNAME)
-	/* getexecname(3) returns an absolute pathname, normalize it. */
-	if (__progname == NULL)
-		setprogname(getexecname());
-#endif
-
 	return __progname;
 }
 
