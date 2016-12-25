@@ -1,8 +1,6 @@
-<$root/src/mklib
+<$root/src/mkconf
 
-LIB=$root/$objtype/lib/lib9n.a
-
-all:V: $LIB
+LIB=lib9n
 
 NUM=\
 	charstod.$O\
@@ -119,6 +117,8 @@ CLEANFILES=\
 	fmt/*.[o]\
 	utf/*.[o]\
 	bio/*.[o]\
+
+<$root/src/mklib
 
 %.$O: regexp/%.c
 	$CC $CFLAGS -Ifmt $CPPFLAGS -c regexp/$stem.c -o $target
