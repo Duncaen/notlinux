@@ -1,0 +1,147 @@
+LIBS=\
+	libopenbsd\
+	libncurses\
+	libdb\
+
+TARG=\
+	vi\
+
+VI_OFILES=\
+	${TARG}.o\
+	getc.$O\
+	v_at.$O\
+	v_ch.$O\
+	v_cmd.$O\
+	v_delete.$O\
+	v_ex.$O\
+	v_increment.$O\
+	v_init.$O\
+	v_itxt.$O\
+	v_left.$O\
+	v_mark.$O\
+	v_match.$O\
+	v_paragraph.$O\
+	v_put.$O\
+	v_redraw.$O\
+	v_replace.$O\
+	v_right.$O\
+	v_screen.$O\
+	v_scroll.$O\
+	v_search.$O\
+	v_section.$O\
+	v_sentence.$O\
+	v_status.$O\
+	v_txt.$O\
+	v_ulcase.$O\
+	v_undo.$O\
+	v_util.$O\
+	v_word.$O\
+	v_xchar.$O\
+	v_yank.$O\
+	v_z.$O\
+	v_zexit.$O\
+	vs_line.$O\
+	vs_msg.$O\
+	vs_refresh.$O\
+	vs_relative.$O\
+	vs_smap.$O\
+	vs_split.$O\
+
+COMMON_OFILES=\
+	cut.$O\
+	delete.$O\
+	exf.$O\
+	key.$O\
+	line.$O\
+	log.$O\
+	main.$O\
+	mark.$O\
+	msg.$O\
+	options.$O\
+	options_f.$O\
+	put.$O\
+	recover.$O\
+	screen.$O\
+	search.$O\
+	seq.$O\
+	util.$O\
+
+CL_OFILES=\
+	cl_funcs.$O\
+	cl_main.$O\
+	cl_read.$O\
+	cl_screen.$O\
+	cl_term.$O\
+
+EX_OFILES=\
+	ex.$O\
+	ex_abbrev.$O\
+	ex_append.$O\
+	ex_args.$O\
+	ex_argv.$O\
+	ex_at.$O\
+	ex_bang.$O\
+	ex_cd.$O\
+	ex_cmd.$O\
+	ex_delete.$O\
+	ex_display.$O\
+	ex_edit.$O\
+	ex_equal.$O\
+	ex_file.$O\
+	ex_filter.$O\
+	ex_global.$O\
+	ex_init.$O\
+	ex_join.$O\
+	ex_map.$O\
+	ex_mark.$O\
+	ex_mkexrc.$O\
+	ex_move.$O\
+	ex_open.$O\
+	ex_preserve.$O\
+	ex_print.$O\
+	ex_put.$O\
+	ex_quit.$O\
+	ex_read.$O\
+	ex_screen.$O\
+	ex_script.$O\
+	ex_set.$O\
+	ex_shell.$O\
+	ex_shift.$O\
+	ex_source.$O\
+	ex_stop.$O\
+	ex_subst.$O\
+	ex_tag.$O\
+	ex_txt.$O\
+	ex_undo.$O\
+	ex_usage.$O\
+	ex_util.$O\
+	ex_version.$O\
+	ex_visual.$O\
+	ex_write.$O\
+	ex_yank.$O\
+	ex_z.$O\
+
+OFILES=\
+	${VI_OFILES:=vi/%}\
+	${COMMON_OFILES:=common/%}\
+	${EX_OFILES:=ex/%}\
+	${CL_OFILES:=cl/%}\
+
+CPPFLAGS=\
+	-Ibuild\
+	-Iinclude\
+	${CPPFLAGS}\
+
+<$root/src/mkcmd
+
+%.$O: vi/%.c
+	$CC $CFLAGS -Ifmt $CPPFLAGS -c vi/$stem.c -o $target
+
+%.$O: ex/%.c
+	$CC $CFLAGS -Ifmt $CPPFLAGS -c ex/$stem.c -o $target
+
+%.$O: cl/%.c
+	$CC $CFLAGS $CPPFLAGS -c cl/$stem.c -o $target
+
+%.$O: common/%.c
+	$CC $CFLAGS $CPPFLAGS -c common/$stem.c -o $target

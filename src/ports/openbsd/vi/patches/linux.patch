@@ -1,0 +1,83 @@
+--- build/config.h.orig
++++ build/config.h
+@@ -2,3 +2,15 @@
+ 
+ /* Define if you want a debugging version. */
+ /* #undef DEBUG */
++
++#ifndef REG_STARTEND
++#define REG_STARTEND	0
++#endif
++
++#ifndef TCSASOFT
++#define TCSASOFT	0
++#endif
++
++#ifndef INFTIM
++#define INFTIM	-1
++#endif
+--- ex/ex_script.c.orig
++++ ex/ex_script.c
+@@ -32,7 +32,6 @@
+ #include <string.h>
+ #include <termios.h>
+ #include <unistd.h>
+-#include <util.h>
+ 
+ #include "../common/common.h"
+ #include "../vi/vi.h"
+--- cl/cl_screen.c.orig
++++ cl/cl_screen.c
+@@ -331,7 +331,9 @@
+ 		clp->vi_enter.c_iflag |= IXOFF;
+ 
+ 	clp->vi_enter.c_lflag |= ISIG;
++#ifdef VDSUSP
+ 	clp->vi_enter.c_cc[VDSUSP] = _POSIX_VDISABLE;
++#endif
+ 	clp->vi_enter.c_cc[VQUIT] = _POSIX_VDISABLE;
+ 	clp->vi_enter.c_cc[VSUSP] = _POSIX_VDISABLE;
+ 
+@@ -343,7 +345,9 @@
+ 	 */
+ 	clp->vi_enter.c_cc[VDISCARD] = _POSIX_VDISABLE;
+ 	clp->vi_enter.c_cc[VLNEXT] = _POSIX_VDISABLE;
++#ifdef VSTATUS
+ 	clp->vi_enter.c_cc[VSTATUS] = _POSIX_VDISABLE;
++#endif
+ 
+ 	/* Initialize terminal based information. */
+ 	if (cl_term_init(sp))
+@@ -393,8 +397,11 @@
+ 	/* End curses window. */
+ 	(void)endwin();
+ 
++#if 0
++	/* this results in a segfault with netbsd-curses, nvi removed this too */
+ 	/* Free the SCREEN created by newterm(3). */
+ 	delscreen(set_term(NULL));
++#endif
+ 
+ 	/*
+ 	 * XXX
+--- cl/cl_read.c.orig
++++ cl/cl_read.c
+@@ -14,6 +14,7 @@
+ #include <sys/types.h>
+ #include <openbsd-queue.h>
+ #include <sys/time.h>
++#include <sys/ioctl.h>
+ 
+ #include <bitstring.h>
+ #include <curses.h>
+--- common/common.h.orig
++++ common/common.h
+@@ -11,7 +11,7 @@
+  *	@(#)common.h	10.13 (Berkeley) 9/25/96
+  */
+ 
+-#include <db.h>
++#include <db_185.h>
+ #include <regex.h>
+ 
+ /*
