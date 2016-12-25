@@ -1,0 +1,12 @@
+LIBS=libopenbsd
+
+TARG=\
+	xinstall\
+
+OFILES=\
+	xinstall.$O\
+
+<$root/src/mkcmd
+
+${TARG}.install:V:
+	$INSTALL $O.${TARG} ${DESTDIR}${BINDIR}/install

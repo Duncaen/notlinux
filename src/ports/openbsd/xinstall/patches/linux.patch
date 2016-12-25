@@ -1,0 +1,68 @@
+--- xinstall.c.orig
++++ xinstall.c
+@@ -59,6 +59,8 @@
+ #define	USEFSYNC	0x04		/* Tell install to use fsync(2). */
+ #define NOCHANGEBITS	(UF_IMMUTABLE | UF_APPEND | SF_IMMUTABLE | SF_APPEND)
+ #define BACKUP_SUFFIX	".old"
++#define EFTYPE	ENOTSUP
++#define S_BLKSIZE	512
+ 
+ struct passwd *pp;
+ struct group *gp;
+@@ -109,10 +111,12 @@
+ 			iflags |= USEFSYNC;
+ 			break;
+ 		case 'f':
++#if 0
+ 			flags = optarg;
+ 			if (strtofflags(&flags, &fset, NULL))
+ 				errx(1, "%s: invalid flag", flags);
+ 			iflags |= SETFLAGS;
++#endif
+ 			break;
+ 		case 'g':
+ 			group = optarg;
+@@ -370,6 +374,7 @@
+ 		    strerror(serrno));
+ 	}
+ 
++#if 0
+ 	/*
+ 	 * If provided a set of flags, set them, otherwise, preserve the
+ 	 * flags, except for the dump flag.
+@@ -380,6 +385,7 @@
+ 			warnx("%s: chflags: %s",
+ 			    safecopy ? tempfile :to_name, strerror(errno));
+ 	}
++#endif
+ 
+ 	if (flags & USEFSYNC)
+ 		fsync(to_fd);
+@@ -392,9 +398,11 @@
+ 	 * and the files are different (or just not compared).
+ 	 */
+ 	if (safecopy && !files_match) {
++#if 0
+ 		/* Try to turn off the immutable bits. */
+ 		if (to_sb.st_flags & (NOCHANGEBITS))
+ 			(void)chflags(to_name, to_sb.st_flags & ~(NOCHANGEBITS));
++#endif
+ 		if (dobackup) {
+ 			char backup[PATH_MAX];
+ 			(void)snprintf(backup, PATH_MAX, "%s%s", to_name,
+@@ -658,6 +666,7 @@
+ {
+ 	char backup[PATH_MAX];
+ 
++#if 0
+ 	/*
+ 	 * Unlink now... avoid ETXTBSY errors later.  Try and turn
+ 	 * off the append/immutable bits -- if we fail, go ahead,
+@@ -665,6 +674,7 @@
+ 	 */
+ 	if (sbp->st_flags & (NOCHANGEBITS))
+ 		(void)chflags(path, sbp->st_flags & ~(NOCHANGEBITS));
++#endif
+ 
+ 	if (dobackup) {
+ 		(void)snprintf(backup, PATH_MAX, "%s%s", path, suffix);
