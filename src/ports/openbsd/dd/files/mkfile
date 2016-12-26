@@ -1,0 +1,15 @@
+LIBS=\
+	libopenbsd\
+
+TARG=\
+	dd\
+
+OFILES=\
+	${TARG}.$O\
+	args.$O\
+	conv.$O\
+	conv_tab.$O\
+	misc.$O\
+	position.$O\
+
+<$root/src/mkcmd
