@@ -1,0 +1,15 @@
+LIBS=libopenbsd
+
+TARG=\
+	mtree\
+
+OFILES=\
+	${TARG}.$O\
+	compare.$O\
+	crc.$O\
+	create.$O\
+	misc.$O\
+	spec.$O\
+	verify.$O\
+
+<$root/src/mkcmd

@@ -1,0 +1,103 @@
+--- spec.c.orig
++++ spec.c
+@@ -192,6 +192,7 @@
+ 			if (!ip->md5digest)
+ 				error("%s", strerror(errno));
+ 			break;
++#if 0
+ 		case F_FLAGS:
+ 			if (!strcmp(val, "none")) {
+ 				ip->file_flags = 0;
+@@ -201,6 +202,7 @@
+ 				error("%s", strerror(errno));
+ 			ip->file_flags = fset;
+ 			break; 
++#endif
+ 		case F_GID:
+ 			ip->st_gid = strtoul(val, &ep, 10);
+ 			if (*ep)
+@@ -241,7 +243,7 @@
+ 				error("%s", strerror(errno));
+ 			break;
+ 		case F_SIZE:
+-			ip->st_size = strtouq(val, &ep, 10);
++			ip->st_size = strtoull(val, &ep, 10);
+ 			if (*ep)
+ 				error("invalid size %s", val);
+ 			break;
+--- compare.c.orig
++++ compare.c
+@@ -198,14 +198,14 @@
+ 		struct timeval tv[2];
+ 
+ 		TIMESPEC_TO_TIMEVAL(&tv[0], &s->st_mtimespec);
+-		TIMESPEC_TO_TIMEVAL(&tv[1], &p->fts_statp->st_mtimespec);
++		TIMESPEC_TO_TIMEVAL(&tv[1], &p->fts_statp->st_mtim);
+ 		if (tv[0].tv_sec != tv[1].tv_sec ||
+ 		    tv[0].tv_usec != tv[1].tv_usec) {
+ 			LABEL;
+ 			(void)printf("%smodification time (%.24s, ",
+ 			    tab, ctime(&s->st_mtimespec.tv_sec));
+ 			(void)printf("%.24s",
+-			    ctime(&p->fts_statp->st_mtimespec.tv_sec));
++			    ctime(&p->fts_statp->st_mtim.tv_sec));
+ 			if (tflag) {
+ 				tv[1] = tv[0];
+ 				if (utimes(p->fts_accpath, tv))
+@@ -308,6 +308,7 @@
+ 		LABEL;
+ 		(void)printf("%slink ref (%s, %s)\n", tab, cp, s->slink);
+ 	}
++#if 0
+ 	if (s->flags & F_FLAGS && s->file_flags != p->fts_statp->st_flags) {
+ 		char *db_flags = NULL;
+ 		char *cur_flags = NULL;
+@@ -343,6 +344,7 @@
+ 			free(cur_flags);
+ 		}
+ 	}
++#endif
+ 	return (label);
+ }
+ 
+--- misc.c.orig
++++ misc.c
+@@ -52,7 +52,9 @@
+ /* NB: the following table must be sorted lexically. */
+ static KEY keylist[] = {
+ 	{"cksum",	F_CKSUM,	NEEDVALUE},
++#if 0
+ 	{"flags",	F_FLAGS,	NEEDVALUE},
++#endif
+ 	{"gid",		F_GID,		NEEDVALUE},
+ 	{"gname",	F_GNAME,	NEEDVALUE},
+ 	{"ignore",	F_IGN,		0},
+--- create.c.orig
++++ create.c
+@@ -188,8 +188,8 @@
+ 		output(indent, &offset, "size=%qd", p->fts_statp->st_size);
+ 	if (keys & F_TIME)
+ 		output(indent, &offset, "time=%lld.%ld",
+-		    (long long)p->fts_statp->st_mtimespec.tv_sec,
+-		    p->fts_statp->st_mtimespec.tv_nsec);
++		    (long long)p->fts_statp->st_mtim.tv_sec,
++		    p->fts_statp->st_mtim.tv_nsec);
+ 	if (keys & F_CKSUM && S_ISREG(p->fts_statp->st_mode)) {
+ 		if ((fd = open(p->fts_accpath, MTREE_O_FLAGS, 0)) < 0 ||
+ 		    crc(fd, &val, &len))
+@@ -244,6 +244,7 @@
+ 		output(indent, &offset, "link=%s", escaped_name);
+ 		free(escaped_name);
+ 	}
++#if 0
+ 	if (keys & F_FLAGS && !S_ISLNK(p->fts_statp->st_mode)) {
+ 		char *file_flags;
+ 
+@@ -256,6 +257,7 @@
+ 			output(indent, &offset, "flags=none");
+ 		free(file_flags);
+ 	}
++#endif
+ 	(void)putchar('\n');
+ }
+ 
