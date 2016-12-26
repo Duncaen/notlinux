@@ -1,0 +1,8 @@
+pkg=snooze
+ver=0.1
+
+url=https://github.com/chneukirchen/snooze/archive/v${ver}.tar.gz
+
+build_style=mk
+
+<$root/src/mkport

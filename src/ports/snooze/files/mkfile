@@ -1,0 +1,7 @@
+TARG=\
+	snooze\
+
+OFILES=\
+	${TARG}.$O\
+
+<$root/src/mkcmd
