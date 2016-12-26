@@ -36,7 +36,6 @@ OFILES=\
 	strlcpy.$O\
 	strtoimax.$O\
 	strtonum.$O\
-	strtoull.$O\
 	strtoumax.$O\
 	verrc.$O\
 	vwarnc.$O\
@@ -65,7 +64,6 @@ CLEANFILES=\
 	$HASH_HELPER\
 
 <$root/src/mklib
-
 
 hash/%hl.$O: hash/%hl.c
 

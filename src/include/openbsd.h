@@ -116,7 +116,6 @@ void qsort(void *, size_t, size_t, int (*)(const void *, const void *));
 int sradixsort(const unsigned char **, int, const unsigned char *, unsigned);
 double strtod(const char *__restrict, char **__restrict);
 long long strtonum(const char *, long long, long long, const char **);
-unsigned long long strtoull(const char *__restrict, char **__restrict, int);
 long double strtold(const char *__restrict, char **__restrict);
 
 /* resolv.h */
