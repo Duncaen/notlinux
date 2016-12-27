@@ -1,0 +1,29 @@
+--- kill.c.orig
++++ kill.c
+@@ -77,7 +77,7 @@
+ 				numsig -= 128;
+ 			if (numsig <= 0 || numsig >= NSIG)
+ 				nosig(*argv);
+-			printf("%s\n", sys_signame[numsig]);
++			printf("%s\n", strsignal(numsig));
+ 			exit(0);
+ 		}
+ 		printsignals(stdout);
+@@ -141,7 +141,7 @@
+ 	if (!strncasecmp(sig, "sig", 3))
+ 		sig += 3;
+ 	for (n = 1; n < NSIG; n++) {
+-		if (!strcasecmp(sys_signame[n], sig))
++		if (!strcasecmp(strsignal(n), sig))
+ 			return (n);
+ 	}
+ 	return (-1);
+@@ -162,7 +162,7 @@
+ 	int n;
+ 
+ 	for (n = 1; n < NSIG; n++) {
+-		(void)fprintf(fp, "%s", sys_signame[n]);
++		(void)fprintf(fp, "%s", strsignal(n));
+ 		if (n == (NSIG / 2) || n == (NSIG - 1))
+ 			(void)fprintf(fp, "\n");
+ 		else
