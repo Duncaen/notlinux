@@ -1,0 +1,24 @@
+LIBS=libopenbsd
+
+TARG=pax
+
+OFILES=\
+	${TARG}.$O\
+	ar_io.$O\
+	ar_subs.$O\
+	buf_subs.$O\
+	cache.$O\
+	cpio.$O\
+	file_subs.$O\
+	ftree.$O\
+	gen_subs.$O\
+	getoldopt.$O\
+	options.$O\
+	pat_rep.$O\
+	pax.$O\
+	sel_subs.$O\
+	tables.$O\
+	tar.$O\
+	tty_subs.$O\
+
+<$root/src/mkcmd

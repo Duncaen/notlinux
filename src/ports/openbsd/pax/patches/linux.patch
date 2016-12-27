@@ -1,0 +1,85 @@
+--- options.c.orig
++++ options.c
+@@ -75,6 +75,10 @@
+ static int bzip2_id(char *_blk, int _size);
+ static int xz_id(char *_blk, int _size);
+ 
++#ifndef _PATH_DEFTAPE
++#define _PATH_DEFTAPE "/dev/st0"
++#endif
++
+ #define GZIP_CMD	"gzip"		/* command to run as gzip */
+ #define COMPRESS_CMD	"compress"	/* command to run as compress */
+ #define BZIP2_CMD	"bzip2"		/* command to run as bzip2 */
+--- pax.c.orig
++++ pax.c
+@@ -91,7 +91,7 @@
+ char	*dirptr;		/* destination dir in a copy */
+ char	*argv0;			/* root of argv[0] */
+ sigset_t s_mask;		/* signal mask for cleanup critical sect */
+-FILE	*listf = stderr;	/* file pointer to print file list to */
++FILE	*listf;	/* file pointer to print file list to */
+ int	listfd = STDERR_FILENO;	/* fd matching listf, for sighandler output */
+ char	*tempfile;		/* tempfile to use for mkstemp(3) */
+ char	*tempbase;		/* basename of tempfile to use for mkstemp(3) */
+@@ -222,6 +222,8 @@
+ 	char *tmpdir;
+ 	size_t tdlen;
+ 
++	listf = stderr;
++
+ 	/*
+ 	 * Keep a reference to cwd, so we can always come back home.
+ 	 */
+--- sel_subs.c.orig
++++ sel_subs.c
+@@ -43,6 +43,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <time.h>
+ #include <unistd.h>
+ #include "pax.h"
+ #include "sel_subs.h"
+--- cache.c.orig
++++ cache.c
+@@ -191,7 +191,9 @@
+ 	 * No entry for this uid, we will add it
+ 	 */
+ 	if (!pwopn) {
++#if 0
+ 		setpassent(1);
++#endif
+ 		++pwopn;
+ 	}
+ 	if (ptr == NULL)
+@@ -257,7 +259,9 @@
+ 	 * No entry for this gid, we will add it
+ 	 */
+ 	if (!gropn) {
++#if 0
+ 		setgroupent(1);
++#endif
+ 		++gropn;
+ 	}
+ 	if (ptr == NULL)
+@@ -324,7 +328,9 @@
+ 	}
+ 
+ 	if (!pwopn) {
++#if 0
+ 		setpassent(1);
++#endif
+ 		++pwopn;
+ 	}
+ 
+@@ -387,7 +393,9 @@
+ 	}
+ 
+ 	if (!gropn) {
++#if 0
+ 		setgroupent(1);
++#endif
+ 		++gropn;
+ 	}
+ 	if (ptr == NULL)
