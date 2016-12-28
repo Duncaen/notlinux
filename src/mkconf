@@ -1,69 +1,50 @@
-MKSHELL = sh
-objtype = x86_64-linux-musl
-O       = o
-OS      = o
+MKSHELL=sh
+O=o
+OS=o
 
+CC=gcc
+LD=gcc
+AS=as
+AR=gcc-ar
+RANLIB=gcc-ranlib
 
-GCC    = ${objtype}-gcc
-CC    = ${GCC}
-LD    = ${CC}
-AS    = ${objtype}-as
+BUILDCC=gcc
+HOSTCC=${BUILDCC}
+BUILDLD=gcc
+HOSTLD=${BUILDLD}
 
-AR     = ${objtype}-gcc-ar
-RANLIB = ${objtype}-gcc-ranlib
+BUILDCFLAGS=
+HOST_CFLAGS=${BUILDLCFLAGS}
+BUILDLDFLAGS=
+HOST_LDFLAGS=${BUILDLDFLAGS}
 
-YACC  = yacc
-LEX   = flex
+YACC=yacc
+LEX=flex
+INSTALL=install
 
-CFLAGS_DEBUG   = -g -O0 # -v
-CFLAGS_HARDEN  = -fstack-protector-strong -D_FORTIFY_SOURCE=2
-#CFLAGS_PIE =  -pie -fPIE
-CFLAGS_OPTIMIZE= -O2 -flto
-CFLAGS_STATIC  = ${CFLAGS_PIE}
-CFLAGS_VERBOSE = -Wformat -Wformat-security -Wpedantic
+AFLAGS=
+YFLAGS=-d
+
+<$root/etc/mk/conf.mk
+<$root/etc/mk/$objtype.mk
+
+DESTDIR=$root/$objtype
+PREFIX=/$objtype
+BINDIR=${PREFIX}/bin
+LIBDIR=${PREFIX}/lib
+ETCDIR=/etc
+SRCDIR=/src
+INCDIR=${SRCDIR}/include
+SHAREDIR=/share
+
+CPUBINDIR=$cpuobjtype/bin
+PATH=$root/${CPUBINDIR}:$PATH
 
 CFLAGS=\
-	${CFLAGS_DEBUG}\
-	${CFLAGS_HARDEN}\
-	${CFLAGS_OPTIZE}\
-	${CFLAGS_STATIC}\
-	${CFLAGS_VERBOSE}\
-	-I $root/$objtype/src/include\
+	${CFLAGS}\
+	-I${DESTDIR}${INCDIR}\
 	-isystem $root/src/include\
 
-
-LDFLAGS_DEBUG = -g # -v -Wl,--verbose
-LDFLAGS_HARDEN = -Wl,--as-needed -Wl,-z,relro -Wl,-z,now
-LDFLAGS_PIE = -shared -Wl,-Bstatic -Wl,-Bsymbolic
-LDFLAGS_OPTIMIZE = -flto
-LDFLAGS_STATIC = -static
-
 LDFLAGS=\
-	${LDFLAGS_STATIC}\
-	${LDFLAGS_DEBUG}\
-	${LDFLAGS_HARDEN}\
-	${LDFLAGS_OPTIMIZE}\
-	-L$root/$objtype/lib\
-
-AFLAGS  =
-YFLAGS  =-d
-
-BUILDCC = gcc
-BUILDLD = gcc
-
-BUILDCFLAGS  =
-BUILDLDFLAGS =
-
-HOSTCC  = ${BUILDCC}
-HOSTLD  = ${BUILDLD}
-
-HOST_CFLAGS = ${BUILDLCFLAGS}
-HOST_LDFLAGS = ${BUILDLDFLAGS}
-
-INSTALL = install
-
-DESTDIR= $root
-PREFIX =
-BINDIR = /$objtype/bin
-LIBDIR = /$objtype/lib
-INCDIR = /$objtype/src/include
+	${LDFLAGS}\
+	-L${DESTDIR}${LIBDIR}\
