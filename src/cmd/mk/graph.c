@@ -163,13 +163,20 @@ static Node *
 newnode(char *name)
 {
 	register Node *node;
+	struct timespec *t;
 
 	node = (Node *)Malloc(sizeof(Node));
 	symlook(name, S_NODE, (void *)node);
 	node->name = name;
-	node->time = timeof(name, 0);
+	t = timeof(name, 0);
+	if (t) {
+		node->time.tv_sec = t->tv_sec;
+		node->time.tv_nsec = t->tv_nsec;
+	} else {
+		timespecclear(&node->time);
+	}
 	node->prereqs = 0;
-	node->flags = node->time? PROBABLE : 0;
+	node->flags = timespecisset(&node->time)? PROBABLE : 0;
 	node->next = 0;
 	return(node);
 }
@@ -182,7 +189,7 @@ dumpn(char *s, Node *n)
 
 	snprint(buf, sizeof buf, "%s   ", (*s == ' ')? s:"");
 	Bprint(&bout, "%s%s@%ld: time=%ld flags=0x%x next=%ld\n",
-		s, n->name, n, n->time, n->flags, n->next);
+		s, n->name, n, n->time.tv_sec, n->flags, n->next);
 	for(a = n->prereqs; a; a = a->next)
 		dumpa(buf, a);
 }
@@ -275,5 +282,5 @@ attribute(Node *n)
 			attribute(a->n);
 	}
 	if(n->flags&VIRTUAL)
-		n->time = 0;
+		timespecclear(&n->time);
 }

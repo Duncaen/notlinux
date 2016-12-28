@@ -41,11 +41,11 @@ readn(int f, void *av, long n)
 	}
 	return t;
 }
-long
+struct timespec *
 atimeof(int force, char *name)
 {
 	Symtab *sym;
-	long t;
+	struct timespec *t;
 	char *archive, *member, buf[512];
 
 	archive = split(name, &member);
@@ -55,15 +55,15 @@ atimeof(int force, char *name)
 	t = mtime(archive);
 	sym = symlook(archive, S_AGG, 0);
 	if(sym){
-		if(force || (t > sym->u.value)){
+		if(force || timespeccmp(t, (struct timespec *)sym->u.ptr, >)){
 			atimes(archive);
-			sym->u.value = t;
+			sym->u.ptr = t;
 		}
 	}
 	else{
 		atimes(archive);
 		/* mark the aggegate as having been done */
-		symlook(strdup(archive), S_AGG, "")->u.value = t;
+		symlook(strdup(archive), S_AGG, "")->u.ptr = t;
 	}
 		/* truncate long member name to sizeof of name field in archive header */
 	if(dolong)
@@ -72,7 +72,7 @@ atimeof(int force, char *name)
 		snprint(buf, sizeof(buf), "%s(%.*s)", archive, SARNAME, member);
 	sym = symlook(buf, S_TIME, 0);
 	if (sym)
-		return sym->u.value;
+		return sym->u.ptr;
 	return 0;
 }
 

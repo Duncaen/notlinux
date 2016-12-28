@@ -26,7 +26,7 @@ dorecipe(Node *node)
 			fprint(2, "mk: no recipe to make '%s'\n", node->name);
 			Exit();
 		}
-		if(strchr(node->name, '(') && node->time == 0)
+		if(strchr(node->name, '(') && !timespecisset(&node->time))
 			MADESET(node, MADE);
 		else
 			update(0, node);
@@ -60,7 +60,7 @@ dorecipe(Node *node)
 			if((s = symlook(buf, S_NODE, 0)) == 0)
 				continue;	/* not a node we are interested in */
 			n = s->u.ptr;
-			if(aflag == 0 && n->time) {
+			if(aflag == 0 && timespecisset(&n->time)) {
 				for(a = n->prereqs; a; a = a->next)
 					if(a->n && outofdate(n, a, 0))
 						break;

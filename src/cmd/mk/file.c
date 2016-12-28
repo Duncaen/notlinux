@@ -2,17 +2,17 @@
 
 /* table-driven version in bootes dump of 12/31/96 */
 
-long
+struct timespec *
 mtime(char *name)
 {
 	return mkmtime(name);
 }
 
-long
+struct timespec *
 timeof(char *name, int force)
 {
 	Symtab *sym;
-	long t;
+	struct timespec *t;
 
 	if(utfrune(name, '('))
 		return atimeof(force, name);	/* archive */
@@ -23,13 +23,13 @@ timeof(char *name, int force)
 
 	sym = symlook(name, S_TIME, 0);
 	if (sym)
-		return sym->u.value;
+		return sym->u.ptr;
 
 	t = mtime(name);
 	if(t == 0)
 		return 0;
 
-	symlook(name, S_TIME, (void*)t);		/* install time in cache */
+	symlook(name, S_TIME, t);		/* install time in cache */
 	return t;
 }
 
@@ -61,12 +61,12 @@ delete(char *name)
 void
 timeinit(char *s)
 {
-	long t;
+	struct timespec t, *ts;
 	char *cp;
 	Rune r;
 	int c, n;
 
-	t = time(0);
+	clock_gettime(CLOCK_REALTIME, &t);
 	while (*s) {
 		cp = s;
 		do{
@@ -77,7 +77,10 @@ timeinit(char *s)
 		} while(*s);
 		c = *s;
 		*s = 0;
-		symlook(strdup(cp), S_TIME, (void *)t)->u.value = t;
+		ts = (struct timespec *)Malloc(sizeof(struct timespec));
+		ts->tv_sec = t.tv_sec;
+		ts->tv_nsec = t.tv_nsec;
+		symlook(strdup(cp), S_TIME, (void *)ts)->u.ptr = &ts;
 		if (c)
 			*s++ = c;
 		while(*s){

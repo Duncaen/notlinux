@@ -330,13 +330,18 @@ rcopy(char **to, Resub *match, int n)
 	}
 }
 
-unsigned long
+struct timespec *
 mkmtime(char *name)
 {
 	struct stat st;
+	struct timespec *t;
 
 	if(stat(name, &st) < 0)
 		return 0;
 
-	return st.st_mtime;
+	t = (struct timespec *)Malloc(sizeof(struct timespec));
+	t->tv_sec = st.st_mtim.tv_sec;
+	t->tv_nsec = st.st_mtim.tv_nsec;
+
+	return t;
 }

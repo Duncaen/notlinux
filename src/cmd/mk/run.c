@@ -71,7 +71,7 @@ sched(void)
 				else if(explain)
 					Bprint(&bout, "no touch of virtual '%s'\n", n->name);
 			}
-			n->time = time((long *)0);
+			clock_gettime(CLOCK_REALTIME, &n->time);
 			MADESET(n, MADE);
 		}
 	} else {
@@ -277,12 +277,12 @@ static long tick;
 void
 usage(void)
 {
-	long t;
+	struct timespec t;
 
-	time(&t);
+	clock_gettime(CLOCK_REALTIME, &t);
 	if(tick)
-		tslot[nrunning] += (t-tick);
-	tick = t;
+		tslot[nrunning] += (t.tv_sec-tick);
+	tick = t.tv_sec;
 }
 
 void

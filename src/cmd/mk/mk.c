@@ -44,7 +44,7 @@ clrmade(Node *n)
 	Arc *a;
 
 	n->flags &= ~(CANPRETEND|PRETENDING);
-	if(strchr(n->name, '(') ==0 || n->time)
+	if(strchr(n->name, '(') ==0 || timespecisset(&n->time))
 		n->flags |= CANPRETEND;
 	MADESET(n, NOTMADE);
 	for(a = n->prereqs; a; a = a->next)
@@ -57,7 +57,7 @@ unpretend(Node *n)
 {
 	MADESET(n, NOTMADE);
 	n->flags &= ~(CANPRETEND|PRETENDING);
-	n->time = 0;
+	timespecclear(&n->time);
 }
 
 static char*
@@ -91,13 +91,13 @@ work(Node *node, Node *p, Arc *parc)
 	*/
 	if(node->flags&MADE){
 		if(node->flags&PRETENDING){
-			node->time = 0;
+			timespecclear(&node->time);
 		}else
 			return(did);
 	}
 	/* consider no prerequsite case */
 	if(node->prereqs == 0){
-		if(node->time == 0){
+		if(!timespecisset(&node->time)){
 			fprint(2, "mk: don't know how to make '%s' in %s\n", node->name, dir());
 			if(kflag){
 				node->flags |= BEINGMADE;
@@ -122,11 +122,11 @@ work(Node *node, Node *p, Arc *parc)
 			if(outofdate(node, a, 0)){
 				weoutofdate = 1;
 				if((ra == 0) || (ra->n == 0)
-						|| (ra->n->time < a->n->time))
+						|| timespeccmp(&ra->n->time, &a->n->time, <))
 					ra = a;
 			}
 		} else {
-			if(node->time == 0){
+			if(!timespecisset(&node->time)){
 				if(ra == 0)
 					ra = a;
 				weoutofdate = 1;
@@ -141,7 +141,7 @@ work(Node *node, Node *p, Arc *parc)
 	/*
 		can we pretend to be made?
 	*/
-	if((iflag == 0) && (node->time == 0) && (node->flags&(PRETENDING|CANPRETEND))
+	if((iflag == 0) && !timespecisset(&node->time) && (node->flags&(PRETENDING|CANPRETEND))
 			&& p && ra->n && !outofdate(p, ra, 0)){
 		node->flags &= ~CANPRETEND;
 		MADESET(node, MADE);
@@ -174,16 +174,23 @@ void
 update(int fake, Node *node)
 {
 	Arc *a;
+	struct timespec *t;
 
 	MADESET(node, fake? BEINGMADE : MADE);
 	if(((node->flags&VIRTUAL) == 0) && (access(node->name, 0) == 0)){
-		node->time = timeof(node->name, 1);
+		if ((t = timeof(node->name, 1))) {
+			node->time.tv_sec = t->tv_sec;
+			node->time.tv_nsec = t->tv_nsec;
+		} else {
+			timespecclear(&node->time);
+		}
 		node->flags &= ~(CANPRETEND|PRETENDING);
 		for(a = node->prereqs; a; a = a->next)
 			if(a->prog)
 				outofdate(node, a, 1);
 	} else {
-		node->time = 1;
+		node->time.tv_sec = 1;
+		node->time.tv_nsec = 0;
 		for(a = node->prereqs; a; a = a->next)
 			if(a->n && outofdate(node, a, 1))
 				node->time = a->n->time;
@@ -227,8 +234,8 @@ outofdate(Node *node, Arc *arc, int eval)
 		} else
 			ret = sym->u.value;
 		return(ret-1);
-	} else if(strchr(arc->n->name, '(') && arc->n->time == 0)  /* missing archive member */
+	} else if(strchr(arc->n->name, '(') && !timespecisset(&arc->n->time))  /* missing archive member */
 		return 1;
 	else
-		return node->time <= arc->n->time;
+		return timespeccmp(&node->time, &arc->n->time, <=);
 }
