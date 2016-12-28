@@ -1,0 +1,11 @@
+pkg=zlib
+ver=1.2.8
+
+url=http://zlib.net/zlib-${ver}.tar.xz
+
+build_style=mk
+
+<$root/src/mkport
+
+do-config:QV:
+	true

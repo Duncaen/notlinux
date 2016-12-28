@@ -1,0 +1,39 @@
+<$root/src/mkconf
+
+LIB=libz
+
+OFILES=\
+	adler32.o\
+	crc32.o\
+	deflate.o\
+	infback.o\
+	inffast.o\
+	inflate.o\
+	inftrees.o\
+	trees.o\
+	zutil.o\
+	compress.o\
+	uncompr.o\
+	gzclose.o\
+	gzlib.o\
+	gzread.o\
+	gzwrite.o\
+
+CPPFLAGS=\
+	-D_LARGEFILE64_SOURCE=1\
+	-DHAVE_HIDDEN\
+	${CPPFLAGS}\
+
+HFILES=\
+	zconf.h\
+	zlib.h\
+
+# -shared -Wl,-soname,libz.so.1,--version-script,zlib.map -fPIC
+
+<$root/src/mklib
+
+all:V: ${HFILES:%=$root/$objtype/src/include/%}
+
+$root/$objtype/src/include/%.h: %.h
+	mkdir -p $root/$objtype/src/include/
+	cp $prereq $target
