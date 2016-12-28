@@ -1,0 +1,10 @@
+pkg=musl
+ver=1.1.15
+
+url=http://www.musl-libc.org/releases/musl-${ver}.tar.gz
+sig=${url}.asc
+
+<$root/src/mkport
+
+cfg=\
+	--syslibdir=${LIBDIR}\
