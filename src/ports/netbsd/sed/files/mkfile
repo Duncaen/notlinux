@@ -1,0 +1,12 @@
+LIBS=libopenbsd
+
+TARG=\
+	sed\
+
+OFILES=\
+	compile.$O\
+	main.$O\
+	misc.$O\
+	process.$O\
+
+<$root/src/mkcmd

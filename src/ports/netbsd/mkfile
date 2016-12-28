@@ -1,0 +1,2 @@
+DIRS=`for d in [!_]*/; do echo ${d%/}; done`
+<$root/src/mkdir

@@ -1,0 +1,10 @@
+pkg=sed
+ver=7.0.2
+
+build_style=mk
+
+cvs=anoncvs@anoncvs3.de.NetBSD.org:/cvsroot
+cvs_mod=src/usr.bin/${pkg}
+cvs_rev=netbsd-7-0-2-RELEASE
+
+<$root/src/mkport
