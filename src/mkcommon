@@ -1,11 +1,11 @@
 $O.% $O.out:
-	$LD ${prereq} -o $target $LDFLAGS
+	$LD ${prereq} -o $target $LDFLAGS $LDFLAGS_LIBS
 
 # don't combine with following %.$O rules
 %.$O: $HFILES
 
 %.$O: %.c
-	$CC $CFLAGS $CPPFLAGS -c $stem.c -o $target
+	$CC $CFLAGS $CFLAGS_LIBS $CPPFLAGS $CPPFLASG_LIBS -c $stem.c -o $target
 
 %.$O: %.s
 	$AS $AFLAGS $stem.s

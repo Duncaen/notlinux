@@ -1,5 +1,3 @@
-<$root/src/mkconf
-
 # load CFLAGS and LDFLAGS for libs automatically
 <|for l in $LIBS; do printf \'<${DESTDIR}${LIBDIR}/%s.mk\\n\' "$l"; done
 CFLAGS_LIBS = `for l in $LIBS; do printf '${CFLAGS_%s} ' "$l"; done`
@@ -27,15 +25,3 @@ CLEANFILES=$CLEANFILES $O.${TARG}
 NUKEFILES=$NUKEFILES ${DESTDIR}${BINDIR}/${TARG}
 
 <$root/src/mkcommon
-
-CFLAGS=\
-	${CFLAGS}\
-	${CFLAGS_LIBS}\
-
-CPPFLAGS=\
-	${CPPFLAGS}\
-	${CPPFLAGS_LIBS}\
-
-LDFLAGS=\
-	${LDFLAGS}\
-	${LDFLAGS_LIBS}\
