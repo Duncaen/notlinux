@@ -1,3 +1,5 @@
+<$root/src/mkconf
+
 TARG=nq
 OFILES=${TARG}.$O
 <$root/src/mkcmd

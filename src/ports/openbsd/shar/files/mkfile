@@ -1,5 +1,7 @@
 <$root/src/mkconf
 
+<$root/src/mkconf
+
 all:QV:
 	true
 

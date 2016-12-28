@@ -1,3 +1,5 @@
+<$root/src/mkconf
+
 LIBS=libopenbsd
 
 TARG=\
