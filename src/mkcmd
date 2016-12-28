@@ -1,7 +1,7 @@
 <$root/src/mkconf
 
 # load CFLAGS and LDFLAGS for libs automatically
-<|for l in $LIBS; do printf \'<$root/$objtype/lib/%s.mk\\n\' "$l"; done
+<|for l in $LIBS; do printf \'<${DESTDIR}${LIBDIR}/%s.mk\\n\' "$l"; done
 CFLAGS_LIBS = `for l in $LIBS; do printf '${CFLAGS_%s} ' "$l"; done`
 CPPFLAGS_LIBS = `for l in $LIBS; do printf '${CPPFLAGS_%s} ' "$l"; done`
 LDFLAGS_LIBS = `for l in $LIBS; do printf '${LDFLAGS_%s} ' "$l"; done`
@@ -10,18 +10,17 @@ all:V: $O.${TARG}
 
 ${TARG}:V: $O.${TARG}
 
-$O.${TARG}: $OFILES $LIB
-
+$O.${TARG}: $OFILES
 
 install:V: ${TARG}.install ${TARG}.links
 
-<|printf \"%s.links:V: \$O.%s\\n\" "${TARG}" "${TARG}"; \
+<|printf \"%s.links:QV: \$O.%s\\n\" "${TARG}" "${TARG}"; \
 	for l in $LINKS; do \
 		printf \"\\tln -sf %s ${DESTDIR}${BINDIR}/%s\\n\" "${TARG}" "$l"; \
 	done
 LINKS=
 
-%.install:V: $O.%
+%.install:QV: $O.%
 	$INSTALL $prereq ${DESTDIR}${BINDIR}/$stem
 
 CLEANFILES=$CLEANFILES $O.${TARG}
